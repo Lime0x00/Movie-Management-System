@@ -5,7 +5,7 @@ import java.util.Date;
  * It contains details about the hall, start date, end date, and booked seats.
  * Defensive programming principles are applied.
  */
-class ScreenTime {
+public class ScreenTime {
     private Hall hall;
     private Date startDate;
     private Date endDate;
