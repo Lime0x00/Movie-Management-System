@@ -1,37 +1,68 @@
-import java.util.Date;
-import java.util.List;
+
+package com.project.project;
+
+import java.util.*;
+
 
 public class Report {
-    public static int numberOfSoldSeats (Movie movie) {
+
+    public int numberOfSoldSeats(Movie movie){
         return movie.getBookedSeats();
-    } 
+    }
     
-    public static int getNumberOfSeatsInTime (Date startDate, Date endDate) {
-        int sumBookedSeats = 0;
-        for (Movie movie : MovieStore.getMovies()) {
+   public List<Date[]> getCrowdedTimes() {
+        List<Date[]> mostCrowdedTimes = new ArrayList<>();  // List to store all equally crowded time periods
+        int max = 0;                                        // Variable to store the highest number of booked seats found
+        int tempMax=0;
+        // Loop through all movies in the library
+        for (Movie movie : MovieLibrary.getMovies()) {
+            
+            // Loop through all screening times for each movie
             for (ScreenTime screenTime : movie.getScreenTimes()) {
-                if (screenTime.getStartDate() == startDate && screenTime.getEndDate() == endDate) {
-                    sumBookedSeats += screenTime.getBookedSeats();
+                
+                // Count the number of booked seats for this specific screen time
+                tempMax = getNumberOfSeats(screenTime.getStartDate(), screenTime.getEndDate());
+
+                // Check if this screening has more booked seats than the current maximum
+                if (tempMax > max) {
+                    
+                    // Found a new maximum, so clear the list and add this time period
+                    mostCrowdedTimes.clear();
+                    max = tempMax;     // Update max with the new highest number of booked seats     
+                    
+                    mostCrowdedTimes.add(new Date[] { screenTime.getStartDate(), screenTime.getEndDate() });   //add the new max into the Date list
+                    
+                } else if (tempMax == max) {        // If this screening has the same number of booked seats as the max
+                    
+                    mostCrowdedTimes.add(new Date[] { screenTime.getStartDate(), screenTime.getEndDate() });    //add the similar time to the Date list
                 }
             }
         }
-        return sumBookedSeats;
-    }
+
+        return mostCrowdedTimes;  // Return the list of crowded time periods with the maximum booked seats
+    }                                                    
+
     
-    public static Date[] getCrowdedTime () {
-        Date[] mostCrowded = new Date[2];
-        int max = 0; 
-        int tempMax = 0;
-        for (Movie movie : MovieStore.getMovies()) {
+     /* Calculates the total number of booked seats for a specified screening period across all movies. */
+     
+    private int getNumberOfSeats(Date startDate, Date endDate) {                                            
+        int sumBookedSeats = 0;  // Variable to accumulate the total booked seats for the period
+
+        // Loop through all movies in the library
+        for (Movie movie : MovieLibrary.getMovies()) {
+            // Loop through each screening time for the current movie
             for (ScreenTime screenTime : movie.getScreenTimes()) {
-                tempMax = getNumberOfSeatsInTime(screenTime.getStartDate(), screenTime.getEndDate())
-                if (max < tempMax) {
-                    max = tempMax;
-                    mostCrowded[0] = screenTime.getStartDate();
-                    mostCrowded[1] = screenTime.getEndDate();
+                // Check if the screening time matches the specified start and end dates
+                
+                if (screenTime.getStartDate().equals(startDate) && screenTime.getEndDate().equals(endDate)) {
+                    sumBookedSeats += screenTime.getBookedSeats();  // Add booked seats to the total
                 }
+                
             }
         }
-        return mostCrowded;
+        
+        return sumBookedSeats;  // Return the total number of booked seats for the period
     }
+
 }
+
