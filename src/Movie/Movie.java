@@ -1,3 +1,5 @@
+package Movie;
+
 import java.util.List;
 
 public class Movie {
@@ -9,7 +11,7 @@ public class Movie {
     private List<ScreenTime> lsScreenTimes;
 
     
-    Movie (String title, enGenre genre, float duration, List<ScreenTime> screenTimes) {
+    public Movie(String title, enGenre genre, float duration, List<ScreenTime> screenTimes) {
         setID();
         setTitle(title);
         setGenre(genre);
@@ -34,7 +36,7 @@ public class Movie {
     public List<ScreenTime> getScreenTimes () {return lsScreenTimes;}
     public int getBookedSeats () {
         int bookedSeats = 0 ;
-        for (ScreenTime screenTime : lsScreenTimes) bookedSeats += screenTime.getBookedSeats();
+        for (ScreenTime screenTime : lsScreenTimes) bookedSeats += screenTime.getHall().getBookedSeats();
         return bookedSeats;
     }
     
