@@ -1,107 +1,118 @@
+import netscape.javascript.JSObject;
+import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Hall {
-    private int id;
+    private byte id;
     private int numberOfRows;
     private int numberOfCols;
-    private int bookedSeats;
+    private int bookedSeatsCount;
     private Seat[][] seats;
     
-    
-    Hall (int id, Seat[][] seats) {
-        setID(id);
-        //setRows(seats.);
-        //setCols(numberOfCols);
-        intialzeSeats(seats);
-    }
-    
-    Hall (int id, int numberOfRows, int numberOfCols) {
+    Hall (byte id, int numberOfRows, int numberOfCols) {
         setID(id);
         setRows(numberOfRows);
         setCols(numberOfCols);
-        intialzeSeats(numberOfRows, numberOfCols);
-    }
-    
-     
-    public boolean bookSeat (String seatID) {
-        if (seats[seatID.charAt(0)][seatID.charAt(1)].isAvailable()) {
-            seats[seatID.charAt(0)][seatID.charAt(1)].setAvailablity(false);
-            bookedSeats++;
-            return true;
-        } 
-        return false;
+        initializeSeats(numberOfRows, numberOfCols);
     }
     
     
-    //Helper Method
-    public void setID (int id) {
-        //Some Checks Here
-        this.id = id;
+    // setter functions
+    public void setID (byte id) {
+        if (id > 0 && id < 127) {
+            this.id = id;
+        }else{
+            System.out.println("Error: Invalid ID - must be between 1 and 126.");
+        }
+    }
+    
+    private void setSeatID(int row, int col) {
+        if (row < 0 || row >= numberOfRows || col < 0 || col >= numberOfCols) {
+            System.out.println("Error: Invalid seat position - row or column out of bounds.");
+        }else{
+            String seatID;
+            char rowLetter = (char) ('A' + row);
+            char colIdx = (char) (col + 1);
+            seatID = "" + rowLetter + colIdx;
+            seats[row][col].setID(seatID);
+        }
     }
 
     private void setRows (int numberOfRows) {
-        //Some Checks Here
-        this.numberOfRows = numberOfRows;
+        //Number of English Characters
+        if (numberOfRows >= 1) {
+            this.numberOfRows = Math.min(numberOfRows, 26);
+        }else{
+            System.out.println("Error: Number of rows must be at least 1.");
+        }
+        
     }
     
     private void setCols (int numberOfCols) {
-        //Some Checks Here
-        this.numberOfCols = numberOfCols;
+        if (numberOfCols >= 1) {
+            this.numberOfCols = numberOfCols;
+        }else{
+            System.out.println("Error: Number of columns must be at least 1.");
+        }
     }
-    private void intialzeSeats(int numberOfRows, int numberOfCols) {
+    
+    private void setSeatClass(int row, int col) {
+        int firstClassLimit = (int) Math.ceil(0.2 * numberOfRows); // 20% to first class
+        int secondClassLimit = firstClassLimit + (int) Math.ceil(0.5 * numberOfRows); // 50% to second class
+        // the rest to third class
+        if (row >= 0 && row < firstClassLimit) {
+            seats[row][col].setClass(Seat.enClass.FIRST);
+        } else if (row >= firstClassLimit && row < secondClassLimit) {
+            seats[row][col].setClass(Seat.enClass.SECOND);
+        } else {
+            seats[row][col].setClass(Seat.enClass.THIRD);
+        }
+    }
+    
+    // getter functions
+    public int getTotalSeats () {return numberOfRows * numberOfCols;}
+    public int getBookedSeats () {return bookedSeatsCount;}
+    public int getID () {return id;}
+    //not in UML
+    public Seat[][] getSeats () {return seats;}
+    public int getNumberOfRows () {return numberOfRows;}
+    public int getNumberOfCols () {return numberOfCols;}
+    
+    private void initializeSeats(int numberOfRows, int numberOfCols) {
+        seats = new Seat[numberOfRows][numberOfCols];
         for (int row = 0; row < numberOfRows; row++) {
             for (int col = 0; col < numberOfCols; col++) {
+                seats[row][col] = new Seat();
                 setSeatID(row, col);
                 setSeatClass(row, col);
             }
         }
     }
 
-    private void intialzeSeats(Seat[][] seats) {
-        this.seats = seats;
-    }
-    
-    private void setSeatID(int row, int col) {
-        // Can Write Any Way to Set ID
-        StringBuilder seatID = new StringBuilder();
-        char rowLetter = (char) ('A' + row);
-        seatID.append(rowLetter);
-        seatID.append(col + 1);
-        seats[row][col].setID(seatID.toString());
-    }
-    
-    private void setSeatClass (int row, int col) {
-        char rowLetter = (char) ('A' + row);
-        switch (rowLetter) {
-            case 'A':
-                seats[row][col].setClass(Seat.enClass.FIRST);
-                break;
-            case 'B':
-                seats[row][col].setClass(Seat.enClass.SECOND);
-                break;
-            case 'C':
-                seats[row][col].setClass(Seat.enClass.THIRD);
-                break;
+    public boolean bookSeat (String seatID) {
+        int row = seatID.charAt(0) - 'A';
+        int col = Integer.parseInt(seatID.substring(1)) - 1;
+
+        if ((row >= 0 && row < numberOfRows) && (col >= 0 && col < numberOfCols)) {
+            if (seats[row][col].isAvailable()) {
+                seats[row][col].setAvailablity(false);
+                bookedSeatsCount++;
+                return true;
+            }else{
+                System.out.println("Error: Seat " + seatID + " is already booked.");
+
+            }
+        }else{
+            System.out.println("Error: Seat " + seatID + " is out of bounds.");
+
         }
-    }
-    
-    
-    public int getTotalSeats () {
-        return seats.length;
-    }
-    
-    public int getBookedSeats () {
-        return bookedSeats;
-    }
-    
-    
-    public int getID () {
-        return id;
+        return false;
     }
     
     public boolean isFull () {
         return getBookedSeats() == getTotalSeats();
-    }
-    
+    }    
 }
