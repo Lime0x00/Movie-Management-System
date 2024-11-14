@@ -1,89 +1,65 @@
-import java.util.Date;
 import java.util.List;
 
 public class Movie {
-    
-    private enum enAgeRating {
-        PG_13("Parental Guide 13", 13);
-        
-        private final String description;
-        private final int age;
-
-        enAgeRating (String description, int age) {
-            this.description = description;
-            this.age = age;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-        
-        public int getAge () {
-            return this.age;
-        }
-    };
-    private enum enGenre {
-        ACTION ("Action"),
-        COMEDY ("Comedy"),
-        
-        ROMANCE ("Romance");
-        
-        private final String description;
-        
-        enGenre (String description) {
-            this.description = description;
-        }
-        
-        public String getDescription () {
-            return this.description;
-        }
-    };
-    private static int id;
-    
+    private int id;
+    private static int lastID = 0;
     private String title;
-    
+    private enGenre genre;
     private float duration;
-    private List<ScreenTime> screenTimes;
-    
-    private int bookedSeats;
+    private List<ScreenTime> lsScreenTimes;
 
     
-    Movie (String title) {
-        
-    }
-    
-    
-    public static int getID () {
-        return id;
+    Movie (String title, enGenre genre, float duration, List<ScreenTime> screenTimes) {
+        setID();
+        setTitle(title);
+        setGenre(genre);
+        setDuration(duration);
+        // lsScreenTimes = screenTimes;
+        setScreenTimes(screenTimes);
     }
 
-    public float getDuration() {
-        return duration;
+    // setter functions
+    private void setID () {id = lastID++;}
+    private void setTitle (String title) {this.title = title;}
+    private void setGenre (enGenre genre) {this.genre = genre;}
+    // setDuration and setScreenTimes methods Not Included In UML but May be helpful
+    private void setDuration (float duration) {this.duration = duration;}
+    private void setScreenTimes (List<ScreenTime> screenTimes){this.lsScreenTimes = screenTimes;}
+
+    // getter functions
+    public int getID () {return id;}
+    public String getTitle () {return title;} 
+    public String getGenre () {return genre.getGenre();}
+    public float getDuration() {return duration;}
+    public List<ScreenTime> getScreenTimes () {return lsScreenTimes;}
+    public int getBookedSeats () {
+        int bookedSeats = 0 ;
+        for (ScreenTime screenTime : lsScreenTimes) bookedSeats += screenTime.getBookedSeats();
+        return bookedSeats;
     }
-    
     
     public boolean addScreenTime (ScreenTime screenTime) {
         // Some Checks to see this is valid or not 
-        screenTimes.add(screenTime);
-        return true; // Just A placeholder
+        // In Case There is a schedule to hall
+        if(screenTime == null){
+            System.out.println("Error: Invalid ScreenTime. It Can't be Null !");
+            return false;
+        }
+        else if(lsScreenTimes.contains(screenTime)){
+            System.out.println("Error: ScreenTime Already Exist. It Can't be Duplicated !");
+            return false;
+        }
+        lsScreenTimes.add(screenTime);
+        System.out.println("ScreenTime Added Successfully.");
+        return true; // Just A placeholder   
     }
-    
-    public List<ScreenTime> getScreenTimes () {
-        return screenTimes;
-    }
-    
     
     public boolean hasScreenTime (ScreenTime screenTime) {
-        return this.screenTimes.contains(screenTime);
-    }
-    
-     
-    
-    public int getBookedSeats () {
-        int bookedSeats = 0;
-        for (ScreenTime screenTime : screenTimes) {
-            bookedSeats += screenTime.getBookedSeats();
-        }
-        return bookedSeats;
+        if(lsScreenTimes.contains(screenTime)){
+            return true;
+        }else{
+            System.out.println("Error: This ScreenTime not found.");
+            return false;
+        }    
     }
 }
