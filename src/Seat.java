@@ -1,18 +1,10 @@
 
-
-package com.project.project;
-
-
-import static com.project.project.enClass.FirstClass;
-import static com.project.project.enClass.SecondClass;
-import static com.project.project.enClass.ThirdClass;
-
-
-
 /*
     The Seat class represents a seat in a movie hall with attributes ID, availability,
     price, and class type. The price is determined based on the class type of the seat.
  */
+
+//todo: Recheck the code with UML
 public class Seat {
 
     // Unique identifier for the seat
@@ -25,6 +17,7 @@ public class Seat {
     private float price;
     
     // Class type of the seat (FirstClass, SecondClass, ThirdClass)
+    //todo: Add class of seat
     private enClass classType;
 
     /*
@@ -54,7 +47,7 @@ public class Seat {
      */
     private float setPrice() {
         switch (classType) {
-            case FirstClass -> price = 200.50F;
+            case enClass -> price = 200.50F;
             case SecondClass -> price = 250.95F;
             case ThirdClass -> price = 350.00F;
             default -> throw new AssertionError("Seat Class is Unknown.");
@@ -63,7 +56,7 @@ public class Seat {
     }
 
     /* Gets the unique identifier for the seat */
-    public String getId() {
+    public String getID() {
         return id;
     }
 
@@ -77,11 +70,11 @@ public class Seat {
       based on the class type
     */
     public float getPrice() {
-        return setPrice();
+        return price;
     }
 
     /* Checks if the seat is available for booking */
-    public boolean isIsAvailable() {
+    public boolean isAvailable() {
         return isAvailable;
     }
 }
