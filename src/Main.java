@@ -1,5 +1,4 @@
 import java.text.SimpleDateFormat;
-import java.lang.StringBuilder;
 import java.lang.String;
 import java.util.Scanner;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.Iterator;
 
 
 public class Main {
@@ -71,39 +70,33 @@ public class Main {
     }
 
     public static void main (String[] args) {
-
         initializeLibrary();
 
         Scanner scanObj = new Scanner(System.in);
 
-        int choice = 0;
-
-        start(choice, scanObj);
+        start(scanObj);
 
         scanObj.close();
     }
 
 
-    private static void start (int choice, Scanner scanObj) {
-        String name;
-        short age;
-
+    private static void start (Scanner scanObj) {
         System.out.print("Enter your name: ");
-        name = scanObj.next();
+        String name = scanObj.next();
 
         System.out.print("Enter your age: ");
-        age = scanObj.nextShort();
+        short age = scanObj.nextShort();
 
         var customer = new Customer(name, age);
 
         System.out.println("Welcome " + customer.getName());
 
-        Menu.mainMenu(choice, scanObj, customer);
+        Menu.mainMenu(scanObj, customer);
     }
 
 
 
-    private static boolean confirmMsg (StringBuilder answer, Scanner scanObj, Movie selectedMovie, List<Seat> seats) {
+    private static boolean confirmMsg (Scanner scanObj, Movie selectedMovie, List<Seat> seats) {
        if (seats.size() > 1) {
            float totalPrice = Order.getPrice(selectedMovie, seats);
            var response = Check.Response.UNKNOWN;
@@ -112,8 +105,7 @@ public class Main {
                //todo: Implement message
                System.out.println("Confirm Payment? ");
                System.out.println("Price all is " + totalPrice);
-
-               answer.append(scanObj.next());
+               String answer = scanObj.next();
                response = Check.getResponse(answer);
 
            } while(response == Check.Response.UNKNOWN);
@@ -205,7 +197,7 @@ public class Main {
                 "Log-out",
         };
 
-        private static void mainMenu(int choice, Scanner scanObj, Customer customer) {
+        private static void mainMenu(Scanner scanObj, Customer customer) {
             while (true) {
                 System.out.flush();
                 for (int i = 0; i < Menu.mainMenu.length; i++) {
@@ -213,7 +205,7 @@ public class Main {
                 }
 
                 System.out.print("Choose An Option: ");
-                choice = scanObj.nextInt();
+                int choice = scanObj.nextInt();
 
                 if (!Check.isValidAnswer(choice, Menu.mainMenu)) {
                     System.out.println("Invalid option. Please try again.");
@@ -221,46 +213,44 @@ public class Main {
                 }
 
                 switch (choice) {
-                    case 1: Menu.bookMovie(choice, scanObj, customer);       break;
-                    case 2: Menu.listReceipts(choice, scanObj, customer);    break;
-                    case 3: Menu.generateReports(choice, scanObj);           break;
-                    case 4: start(choice, scanObj);                          break;
+                    case 1 -> bookMovie(scanObj, customer);
+                    case 2 -> generateReports(scanObj);
+                    case 3 -> listReceipts(scanObj, customer);
+                    case 4 -> {
+                        return;
+                    }
                 }
                 System.out.println("Enter Any Key to continue");
                 scanObj.next();
             }
         }
 
-        private static void bookMovie (int choice, Scanner scanObj, Customer customer) {
-            //Clean console screen
+        private static void bookMovie (Scanner scanObj, Customer customer) {
             System.out.flush();
 
             List<Movie> movies = MovieLibrary.getMovies();
-            var movie = Select.movie(choice, scanObj);
+            var movie = Select.movie(scanObj);
 
-            var screenTime = Select.screenTime(choice, scanObj, movie);
+            var screenTime = Select.screenTime(scanObj, movie);
             var hall = screenTime.getHall();
 
-            StringBuilder answer = new StringBuilder(3); // MAX WORD YES = > 3 characters
-
-            var selectedSeats = Select.seats(answer, scanObj, hall);
+            var selectedSeats = Select.seats(scanObj, hall);
             //! Selected Seats must be free before booking (as its checking inside Order)
 
-
-            if (confirmMsg(answer, scanObj, movie, selectedSeats)) {
+            if (confirmMsg(scanObj, movie, selectedSeats)) {
                 var receipt =  customer.bookMovie(screenTime, movie, selectedSeats);
                 Print.receipt(receipt);
             } else {
-                selectedSeats = Select.seats(answer, scanObj, hall);
-                Select.unSelectSeats(answer, scanObj, selectedSeats, hall);
-                if (confirmMsg(answer, scanObj, movie, selectedSeats)) {
+                selectedSeats = Select.seats(scanObj, hall);
+                Select.unSelectSeats(scanObj, selectedSeats, hall);
+                if (confirmMsg(scanObj, movie, selectedSeats)) {
                     var receipt =  customer.bookMovie(screenTime, movie, selectedSeats);
                     Print.receipt(receipt);
                 }
             }
         }
 
-        private static void generateReports (int choice, Scanner scanObj) {
+        private static void generateReports (Scanner scanObj) {
             final String[] reports = {
                     "Number of Sold Seats",
                     "Report for most crowded time",
@@ -278,18 +268,17 @@ public class Main {
 
             //todo: Add more reports
 
-            choice = Select.report(choice, scanObj, reports);
+            int choice = Select.report(scanObj, reports);
 
             System.out.print(reports[choice]);
 
             switch (choice) {
                 case 1:
-                    Movie movie = Select.movie(choice, scanObj);
+                    Movie movie = Select.movie(scanObj);
                     System.out.println(" on movie \"" + movie.getTitle() + "\" is " + Report.numberOfSoldSeats(movie));
                     break;
                 case 2:
-                    System.out.print("");
-
+                    System.out.println();
                     break;
                 case 3:
                     System.out.println(Report.getCrowdedTime());
@@ -302,10 +291,9 @@ public class Main {
         }
 
 
-        private static void listReceipts (int choice, Scanner scanObj, Customer customer) {
+        private static void listReceipts (Scanner scanObj, Customer customer) {
             //ps: receipts better to be array for performance
-            //todo: In case customer chosed to list all receipts
-            //Iterate over all receipts and use printReceipt()
+            int choice;
             var receipts = customer.getReceipts();
 
             if (receipts != null) {
@@ -317,26 +305,37 @@ public class Main {
 
                     System.out.println("Enter Which Receipt to display ");
                     choice = scanObj.nextInt();
+
                 } while (!Check.isValidAnswer(choice, receipts));
 
-                Print.receipt(receipts.get(choice));
+                Print.receipt(receipts.get(choice - 1));
             }
         }
     }
 
     private static class Select {
-        private static Movie movie (int choice, Scanner scanObj) {
+        private static Movie movie(Scanner scanObj) {
+            int choice;
             var movies = MovieLibrary.getMovies();
+
             do {
                 System.out.flush();
-                System.out.print("Choose a movie ");
+                int i = 0;
+                for (var movie : movies) {
+                    System.out.println((i + 1) + ": " + movie.getTitle());
+                    i++;
+                }
+
+                System.out.print("Choose a movie: ");
                 choice = scanObj.nextInt();
+
             } while (!Check.isValidAnswer(choice, movies));
 
-            return movies.get(choice);
+            return movies.get(choice - 1);
         }
 
-        private static ScreenTime screenTime (int choice, Scanner scanObj, Movie movie) {
+        private static ScreenTime screenTime (Scanner scanObj, Movie movie) {
+            int choice;
             var screenTimes = movie.getScreenTimes();
             do {
                 System.out.flush();
@@ -348,7 +347,7 @@ public class Main {
                 for (int i = 0; i < screenTimes.size(); i++) {
                     var screenTime = screenTimes.get(i);
                     if (!screenTime.getHall().isFull()) { //Check if all seats hasn't been booked yet
-                        System.out.print((i + 1) + ": " + screenTime);
+                        System.out.print((i + 1) + ": ");
                         Print.screenTime(screenTime);
                     }
                 }
@@ -356,11 +355,11 @@ public class Main {
                 choice = scanObj.nextInt();
             } while (!Check.isValidAnswer(choice, screenTimes));
 
-            return screenTimes.get(choice);
+            return screenTimes.get(choice - 1);
         }
 
 
-        private static LinkedList<Seat> seats (StringBuilder answer, Scanner scanObj, Hall hall) {
+        private static LinkedList<Seat> seats (Scanner scanObj, Hall hall) {
             var seats = hall.getSeats();
             var selectedSeats = new LinkedList<Seat>();
             var response = Check.Response.UNKNOWN;
@@ -369,7 +368,7 @@ public class Main {
                 Print.seats(hall);
 
                 System.out.print("Do you want to book a seat? (y/n) ");
-                answer.append(scanObj.next());
+                String answer = scanObj.next().trim();
                 response = Check.getResponse(answer);
 
                 if (response == Check.Response.NO) {
@@ -400,16 +399,17 @@ public class Main {
 
             } while (!hall.isFull());
 
+
             return selectedSeats;
         }
 
-        private static void unSelectSeats(StringBuilder answer, Scanner scanObj, List<Seat> selectedSeats, Hall hall) {
+        private static void unSelectSeats (Scanner scanObj, List<Seat> selectedSeats, Hall hall) {
             var seats = hall.getSeats();
             var response = Check.Response.UNKNOWN;
 
             do {
                 System.out.print("Do you want to cancel booked seat? (y/n) ");
-                answer.append(scanObj.next());
+                String answer = scanObj.next();
                 response = Check.getResponse(answer);
 
                 if (response == Check.Response.NO) {
@@ -426,18 +426,30 @@ public class Main {
                 int row = seatID.charAt(0) - 'A';
                 int col = Integer.parseInt(seatID.substring(1)) - 1;
 
-                for (var seat : selectedSeats) {
+                boolean seatFound = false;
+
+                Iterator<Seat> iterator = selectedSeats.iterator();
+                while (iterator.hasNext()) {
+                    Seat seat = iterator.next();
                     if (seatID.equals(seat.getID())) {
-                        selectedSeats.remove(seat);
+                        iterator.remove();
                         seats[row][col].setAvailability(true);
-                        System.out.println("\u001B[32mSuccessfully Removed seat \"" + seatID + "\"!\u001B[0m");
+                        System.out.println("\u001B[32mSuccessfully removed seat \"" + seatID + "\"!\u001B[0m");
+                        seatFound = true;
+                        break;
                     }
                 }
-                response = Check.getResponse(answer);
+
+                if (!seatFound) {
+                    System.out.println("\u001B[31mCannot find seat \"" + seatID + "\" among selected seats.\u001B[0m");
+                }
+
             } while (!selectedSeats.isEmpty());
         }
 
-        private static int report (int choice, Scanner scanObj, String[] reports) {
+
+        private static int report (Scanner scanObj, String[] reports) {
+            int choice;
             do {
                 for (int i = 0; i < reports.length; i++) {
                     System.out.println((i + 1) + ": " + reports[i]);
@@ -467,16 +479,17 @@ public class Main {
             NO,
             UNKNOWN,
         }
+
         private static <T> boolean isValidAnswer (int choice, T[] arr) {
-            return choice >= 1 && choice <= arr.length;
+            return choice > 0 && choice <= arr.length;
         }
 
         private static <T> boolean isValidAnswer (int choice, List<T> list) {
-            return choice >= 0 && choice < list.size();
+            return choice > 0 && choice <= list.size();
         }
 
-        private static Response getResponse(StringBuilder answer) {
-            var normalizedChoice = answer.toString().toLowerCase(Locale.ROOT);
+        private static Response getResponse(String answer) {
+            var normalizedChoice = answer.toLowerCase(Locale.ROOT);
             return switch (normalizedChoice) {
                 case "y", "yes" -> Response.YES;
                 case "n", "no" -> Response.NO;
