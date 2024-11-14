@@ -1,3 +1,8 @@
+package Book;
+
+import Movie.Movie;
+import Movie.ScreenTime;
+import Hall.Seat;
 import java.util.List;
 
 public class Customer {
@@ -8,7 +13,7 @@ public class Customer {
     private List<Receipt> receipts;
     
     
-    Customer (String name, Short age) {
+    public Customer(String name, Short age) {
        setName(name);
        setAge(age);
        id = lastID++;
@@ -42,11 +47,11 @@ public class Customer {
     
 
     public Receipt bookMovie (ScreenTime screenTime, Movie movie, List<Seat> seats) {
-        Receipt receipt = Order.bookMovieTime(id, screenTime, movie, seats);
+        Receipt receipt = Order.bookMovieTime(this, screenTime, movie, seats);
         if (receipt != null) {
             receipts.add(receipt);
             return receipt;
-        } 
+        }
         return null;
     }
 }
