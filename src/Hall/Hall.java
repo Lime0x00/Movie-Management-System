@@ -1,9 +1,4 @@
-import netscape.javascript.JSObject;
-import java.security.Key;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+package Hall;
 
 public class Hall {
     private byte id;
@@ -12,7 +7,7 @@ public class Hall {
     private int bookedSeatsCount;
     private Seat[][] seats;
     
-    Hall (byte id, int numberOfRows, int numberOfCols) {
+    public Hall(byte id, int numberOfRows, int numberOfCols) {
         setID(id);
         setRows(numberOfRows);
         setCols(numberOfCols);
@@ -98,16 +93,14 @@ public class Hall {
 
         if ((row >= 0 && row < numberOfRows) && (col >= 0 && col < numberOfCols)) {
             if (seats[row][col].isAvailable()) {
-                seats[row][col].setAvailablity(false);
+                seats[row][col].setAvailability(false);
                 bookedSeatsCount++;
                 return true;
             }else{
                 System.out.println("Error: Seat " + seatID + " is already booked.");
-
             }
         }else{
             System.out.println("Error: Seat " + seatID + " is out of bounds.");
-
         }
         return false;
     }
