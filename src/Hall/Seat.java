@@ -10,7 +10,7 @@ public class Seat {
     private String id;
     
     // Indicates whether the seat is available for booking
-    private boolean isAvailable;
+    private boolean isAvailable = true;
     
     // Price of the seat based on its class type
     private float price;
@@ -61,7 +61,7 @@ public class Seat {
 
     /* Gets the class type of the seat */
     public String getClassType() {
-        return enClass.getDescription();
+        return classType.getDescription();
     }
 
     /*
