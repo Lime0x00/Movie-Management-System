@@ -6,7 +6,6 @@ package Hall;
 
 //todo: Recheck the code with UML
 public class Seat {
-
     // Unique identifier for the seat
     private String id;
     
@@ -32,6 +31,7 @@ public class Seat {
      */
     public void setClass (enClass classType) {
         this.classType = classType;
+        setPrice();
     }
 
     /* Sets the availability of the seat for booking. */
@@ -45,14 +45,13 @@ public class Seat {
       - SecondClass: 250.95
       - ThirdClass: 350.00
      */
-    private float setPrice() {
+    private void setPrice() {
         switch (classType) {
-            case enClass -> price = 200.50F;
-            case SecondClass -> price = 250.95F;
-            case ThirdClass -> price = 350.00F;
+            case FIRST -> price = 200.50F;
+            case SECOND -> price = 250.95F;
+            case THIRD -> price = 350.00F;
             default -> throw new AssertionError("Seat Class is Unknown.");
         }
-        return price;
     }
 
     /* Gets the unique identifier for the seat */
