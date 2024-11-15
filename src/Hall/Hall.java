@@ -59,11 +59,11 @@ public class Hall {
         int secondClassLimit = firstClassLimit + (int) Math.ceil(0.5 * numberOfRows); // 50% to second class
         // the rest to third class
         if (row >= 0 && row < firstClassLimit) {
-            seats[row][col].setClass(Seat.enClass.FIRST);
+            seats[row][col].setClass(enClass.FIRST);
         } else if (row >= firstClassLimit && row < secondClassLimit) {
-            seats[row][col].setClass(Seat.enClass.SECOND);
+            seats[row][col].setClass(enClass.SECOND);
         } else {
-            seats[row][col].setClass(Seat.enClass.THIRD);
+            seats[row][col].setClass(enClass.THIRD);
         }
     }
     
