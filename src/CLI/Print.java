@@ -55,7 +55,7 @@ public class Print {
             System.out.println("Name :" + receipt.getCustomerName());
             System.out.println("Movie.Movie Name : " + receipt.getMovieName());
             System.out.println("Total Price : " + receipt.getTotalPrice() + " LE");
-            System.out.println("Hall.Hall ID : " + receipt.getHallID());
+            System.out.println("Hall ID : " + receipt.getHallID());
             System.out.println("Start Date : ");
         } else {
             System.out.println("\u001B[31mSomething Went Wrong!\u001B[0m\t");
