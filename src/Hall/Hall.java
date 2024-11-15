@@ -30,7 +30,7 @@ public class Hall {
         }else{
             String seatID;
             char rowLetter = (char) ('A' + row);
-            char colIdx = (char) (col + 1);
+            int colIdx = col + 1;
             seatID = "" + rowLetter + colIdx;
             seats[row][col].setID(seatID);
         }
