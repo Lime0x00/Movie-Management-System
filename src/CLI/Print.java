@@ -50,10 +50,9 @@ public class Print {
     public static void receipt(Receipt receipt) {
         //todo: Implement way to display receipt
         if (receipt != null) {
-            System.out.println("\u001B[32mSuccessful Transication\u001B[0m\t");
             //todo: Add Way to display Book.Receipt
             System.out.println("Name :" + receipt.getCustomerName());
-            System.out.println("Movie.Movie Name : " + receipt.getMovieName());
+            System.out.println("Movie Name : " + receipt.getMovieName());
             System.out.println("Total Price : " + receipt.getTotalPrice() + " LE");
             System.out.println("Hall ID : " + receipt.getHallID());
             System.out.println("Start Date : ");
