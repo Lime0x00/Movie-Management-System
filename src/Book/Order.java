@@ -9,6 +9,7 @@ import Movie.ScreenTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Order {
 
     /*
@@ -38,7 +39,7 @@ public class Order {
                         //making new receipt with customer and movie and hall and screening time details
                         return new Receipt(customer.getName(),movie.getTitle(),getPrice(seats),hall.getID(), seatIDs, screenTime);
                     } else {
-                        // if the seats isn't available then print message and retrun null
+                        // if the seats isn't available then print message and return null
                         System.out.println("Booking failed for some seats.");
                         return null;
                     }
@@ -69,7 +70,6 @@ public class Order {
         }
         return true;
     }
-
     /**
         Displays a confirmation message for the booking, including the total price, selected movie, and screen time.
         **Note: the implementation will be in GUI part **
