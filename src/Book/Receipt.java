@@ -1,3 +1,7 @@
+package Book;
+
+import Movie.ScreenTime;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +11,8 @@ import java.util.List;
  * and associated screen time.
  */
 public class Receipt {
+    private static int lastID;
+    private int id;
     private String movieName;
     private String customerName;
     private float totalPrice;
@@ -36,6 +42,7 @@ public class Receipt {
             throw new IllegalArgumentException("Screen time cannot be null.");
         }
         this.screenTime = screenTime;
+        id = lastID++;
     }
 
     /**
@@ -153,6 +160,10 @@ public class Receipt {
      */
     public Date getEndDate() {
         return screenTime.getEndDate();
+    }
+
+    public int getID () {
+        return id;
     }
 }
 
