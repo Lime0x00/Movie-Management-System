@@ -8,6 +8,6 @@ public enum enClass{
 	enClass (String description) {
         this.description = description;
     }
-	public String getDescription () {return description;}
+	public static String getDescription() {return description;}
 
 }
