@@ -60,8 +60,8 @@ public class Seat {
     }
 
     /* Gets the class type of the seat */
-    public enClass getClassType() {
-        return classType;
+    public String getClassType() {
+        return enClass.getDescription();
     }
 
     /*
