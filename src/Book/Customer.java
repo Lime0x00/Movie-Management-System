@@ -3,6 +3,8 @@ package Book;
 import Movie.Movie;
 import Movie.ScreenTime;
 import Hall.Seat;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
@@ -16,6 +18,7 @@ public class Customer {
     public Customer(String name, Short age) {
        setName(name);
        setAge(age);
+       receipts = new ArrayList<Receipt>();
        id = lastID++;
     }
 
