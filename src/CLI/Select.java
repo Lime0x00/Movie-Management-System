@@ -1,5 +1,4 @@
 package CLI;
-
 import Hall.Hall;
 import Hall.Seat;
 import Movie.Movie;
@@ -60,7 +59,7 @@ public class Select {
     static LinkedList<Seat> seats(Scanner scanObj, Hall hall) {
         var seats = hall.getSeats();
         var selectedSeats = new LinkedList<Seat>();
-        var response = Check.Response.UNKNOWN;
+        var response = Check.enResponse.UNKNOWN;
 
         do {
             Print.seats(hall);
@@ -69,11 +68,11 @@ public class Select {
             String answer = scanObj.next().trim();
             response = Check.getResponse(answer);
 
-            if (response == Check.Response.NO) {
+            if (response == Check.enResponse.NO) {
                 break;
             }
 
-            if (response == Check.Response.UNKNOWN) {
+            if (response == Check.enResponse.UNKNOWN) {
                 continue;
             }
 
@@ -102,18 +101,18 @@ public class Select {
 
     static void unSelectSeats(Scanner scanObj, List<Seat> selectedSeats, Hall hall) {
         var seats = hall.getSeats();
-        var response = Check.Response.UNKNOWN;
+        var response = Check.enResponse.UNKNOWN;
 
         do {
             System.out.print("Do you want to cancel booked seat? (y/n) ");
             String answer = scanObj.next();
             response = Check.getResponse(answer);
 
-            if (response == Check.Response.NO) {
+            if (response == Check.enResponse.NO) {
                 break;
             }
 
-            if (response == Check.Response.UNKNOWN) {
+            if (response == Check.enResponse.UNKNOWN) {
                 continue;
             }
 
