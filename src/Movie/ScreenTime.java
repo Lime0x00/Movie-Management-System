@@ -1,3 +1,7 @@
+package Movie;
+
+import Hall.Hall;
+
 import java.util.Date;
 
 /**
@@ -109,7 +113,7 @@ public class ScreenTime {
      * @return true if both ScreenTimes have the same start and end dates; false otherwise.
      * @throws IllegalArgumentException if otherScreenTime is null.
      */
-    public boolean hasScreenTime(ScreenTime otherScreenTime) {
+    public boolean hasScreenTime (ScreenTime otherScreenTime) {
         if (otherScreenTime == null) {
             throw new IllegalArgumentException("ScreenTime to compare cannot be null.");
         }
