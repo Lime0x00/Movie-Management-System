@@ -16,7 +16,6 @@ public class Movie {
         setTitle(title);
         setGenre(genre);
         setDuration(duration);
-        // lsScreenTimes = screenTimes;
         setScreenTimes(screenTimes);
     }
 
