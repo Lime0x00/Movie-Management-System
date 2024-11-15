@@ -1,16 +1,21 @@
+package Book;
 
-package com.project.project;
+import Movie.Movie;
+import Movie.MovieLibrary;
+import Movie.ScreenTime;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 public class Report {
 
-    public int numberOfSoldSeats(Movie movie){
+    public static int numberOfSoldSeats(Movie movie){
         return movie.getBookedSeats();
     }
     
-   public List<Date[]> getCrowdedTimes() {
+   public static List<Date[]> getCrowdedTimes() {
         List<Date[]> mostCrowdedTimes = new ArrayList<>();  // List to store all equally crowded time periods
         int max = 0;                                        // Variable to store the highest number of booked seats found
         int tempMax=0;
@@ -45,7 +50,7 @@ public class Report {
     
      /* Calculates the total number of booked seats for a specified screening period across all movies. */
      
-    private int getNumberOfSeats(Date startDate, Date endDate) {                                            
+    private static int getNumberOfSeats(Date startDate, Date endDate) {
         int sumBookedSeats = 0;  // Variable to accumulate the total booked seats for the period
 
         // Loop through all movies in the library
@@ -55,7 +60,7 @@ public class Report {
                 // Check if the screening time matches the specified start and end dates
                 
                 if (screenTime.getStartDate().equals(startDate) && screenTime.getEndDate().equals(endDate)) {
-                    sumBookedSeats += screenTime.getBookedSeats();  // Add booked seats to the total
+                    sumBookedSeats += screenTime.getHall().getBookedSeats();  // Add booked seats to the total
                 }
                 
             }

@@ -1,16 +1,15 @@
+package Movie;
+
 import java.util.List;
-import java.util.Scanner;
 
 public class MovieLibrary {
     private static List<Movie> movies;
-    Scanner scanner;
-    
-    MovieLibrary (List<Movie> movies) {
+
+    public MovieLibrary(List<Movie> movies) {
         MovieLibrary.movies = movies;
-        this.scanner = new Scanner(System.in);
     }
 
-    public boolean addMovie(Movie movie) {
+    public static boolean addMovie(Movie movie) {
         movies.add(movie);
         System.out.println(movie.getTitle() + " has been Added Successfully.");
         return true;
@@ -34,7 +33,7 @@ public class MovieLibrary {
         }
     }
 
-    public boolean hasMovie (Movie movie) {
+    public static boolean hasMovie(Movie movie) {
         if (movies.contains(movie)){
             return true;
         }else{
@@ -43,7 +42,7 @@ public class MovieLibrary {
         }
     } 
     
-    public List<Movie> getMovies () {
+    public static List<Movie> getMovies () {
         return movies;
     }
 }

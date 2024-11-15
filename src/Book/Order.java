@@ -1,6 +1,12 @@
+package Book;
 
-package com.project.project;
+import Movie.MovieLibrary;
+import Hall.Hall;
+import Hall.Seat;
+import Movie.Movie;
+import Movie.ScreenTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
@@ -10,13 +16,13 @@ public class Order {
       Checks if there are enough available seats in the selected hall, confirms the booking,
       and creates a receipt with booking details.
     */
-    public Receipt bookMovieTime(Customer customer, ScreenTime screenTime, Movie movie, List<Seat> seats) {                        
+    public static Receipt bookMovieTime(Customer customer, ScreenTime screenTime, Movie movie, List<Seat> seats) {
        
         // Confirm the booking with the total price and selected screening details
         if (confirmMsg(getPrice(seats), movie, screenTime)) {
             
             // Check if the movie exists in the store and if it has the specified screen time
-            if (MovieStore.hasMovie(movie) && movie.hasScreenTime(screenTime)) {
+            if (MovieLibrary.hasMovie(movie) && movie.hasScreenTime(screenTime)) {
             
                 Hall hall = screenTime.getHall();
 
@@ -27,9 +33,10 @@ public class Order {
                     return null;
                 } else {
                     // try to book the specified seats
-                    if (bookSeats(hall, seats)) {
-                        //making new recipt with customer and movie and hall and screening time detales
-                        return new Receipt(customer.getName(),movie.getTitle(),getPrice(seats),hall.getID(),seats,screenTime.getStartDate(),screenTime.getEndDate());
+                    List<String> seatIDs = new ArrayList<>(seats.size());
+                    if (bookSeats(hall, seats, seatIDs)) {
+                        //making new receipt with customer and movie and hall and screening time details
+                        return new Receipt(customer.getName(),movie.getTitle(),getPrice(seats),hall.getID(), seatIDs, screenTime);
                     } else {
                         // if the seats isn't available then print message and retrun null
                         System.out.println("Booking failed for some seats.");
@@ -41,18 +48,24 @@ public class Order {
                 System.out.println("Movie or screen time is incorrect or unavailable.");
                 return null;
             }
-        return null; // if canceled then return null
         }
+        return null; // if canceled then return null
     }
 
     /*Books the specified seats in a given hall by marking each seat as reserved.*/
-    private boolean bookSeats(Hall hall, List<Seat> seats) {
+    private static boolean bookSeats(Hall hall, List<Seat> seats, List<String> seatIDs) {
         // looping the selected seats
         for (Seat seat : seats) {
             // If booking any seat fails, return false
-            if (!hall.bookSeat(seat.getId())) {
+            if (!seat.isAvailable()) {
                 return false;
             }
+        }
+
+        for (Seat seat : seats) {
+            String seatID = seat.getID();
+            hall.bookSeat(seatID);
+            seatIDs.add(seatID);
         }
         return true;
     }
@@ -61,14 +74,14 @@ public class Order {
         Displays a confirmation message for the booking, including the total price, selected movie, and screen time.
         **Note: the implementation will be in GUI part **
      */
-    private boolean confirmMsg(float totalPrice, Movie movie, ScreenTime screenTime) {
+    private static boolean confirmMsg(float totalPrice, Movie movie, ScreenTime screenTime) {
         // using GUI ; temporary returns 
         return true;
     }
 
     /* Calculates the total price for booking the specified seats based on their individual prices. */
     
-    private float getPrice(List<Seat> seats) {
+    public static float getPrice(List<Seat> seats) {
         //intial value for calc. the total price
         float totalPrice = 0.0F;
         //looping the selected seats

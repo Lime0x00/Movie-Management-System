@@ -1,4 +1,4 @@
-
+package Hall;
 /*
     The Seat class represents a seat in a movie hall with attributes ID, availability,
     price, and class type. The price is determined based on the class type of the seat.
@@ -23,14 +23,14 @@ public class Seat {
     /*
       Sets the unique identifier for the seat.
      */
-    public void setId(String id) {
+    public void setID(String id) {
         this.id = id;
     }
 
     /*
        Sets the class type for the seat. The class type affects the price of the seat.
      */
-    public void setClassType(enClass classType) {
+    public void setClass (enClass classType) {
         this.classType = classType;
     }
 
