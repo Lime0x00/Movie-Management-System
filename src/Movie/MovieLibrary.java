@@ -40,8 +40,8 @@ public class MovieLibrary {
             System.out.println("Error: "+movie.getTitle()+" not found.");
             return false;
         }
-    } 
-    
+    }
+
     public static List<Movie> getMovies () {
         return movies;
     }
