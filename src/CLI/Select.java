@@ -85,8 +85,7 @@ public class Select {
             int row = seatID.charAt(0) - 'A';
             int col = Integer.parseInt(seatID.substring(1)) - 1;
 
-            //! Add some protection to row and col
-            if (seats[row][col].isAvailable()) {
+            if (seats[row][col].isAvailable() && !selectedSeats.contains(seats[row][col])) {
                 selectedSeats.add(seats[row][col]);
                 System.out.println("\u001B[32mSuccessfully booked seat \"" + seatID + "\"!\u001B[0m");
             } else {
