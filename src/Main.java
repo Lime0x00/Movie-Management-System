@@ -106,7 +106,7 @@ public class Main {
     public static boolean confirmMsg (Scanner scanObj, Movie selectedMovie, List<Seat> seats, ScreenTime screenTime) {
        if (seats.size() > 1) {
            float totalPrice = Order.getPrice(seats);
-           var response = Check.Response.UNKNOWN;
+           var response = Check.enResponse.UNKNOWN;
 
            do {
                System.out.println("Confirm Payment? ");
@@ -124,9 +124,9 @@ public class Main {
                String answer = scanObj.next();
                response = Check.getResponse(answer);
 
-           } while(response == Check.Response.UNKNOWN);
+           } while(response == Check.enResponse.UNKNOWN);
 
-           return response == Check.Response.YES;
+           return response == Check.enResponse.YES;
        }
        return false;
     }
