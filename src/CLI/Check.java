@@ -1,6 +1,5 @@
 package CLI;
 
-import Application.Format;
 import Book.Order;
 import Hall.Seat;
 import Movie.Movie;
