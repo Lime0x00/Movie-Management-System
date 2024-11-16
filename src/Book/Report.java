@@ -50,7 +50,7 @@ public class Report {
 
      /* Calculates the total number of booked seats for a specified screening period across all movies. */
 
-    private static int getNumberOfSeats(Date startDate, Date endDate) {
+    public static int getNumberOfSeats(Date startDate, Date endDate) {
         int sumBookedSeats = 0;  // Variable to accumulate the total booked seats for the period
 
         // Loop through all movies in the library
