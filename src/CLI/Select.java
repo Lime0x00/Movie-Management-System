@@ -6,26 +6,19 @@ import Movie.MovieLibrary;
 import Movie.ScreenTime;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.ArrayList;
 public class Select {
-    static Movie movie(Scanner scanObj) {
+    static Movie movie (Scanner scanObj) {
         int choice;
         var movies = MovieLibrary.getMovies();
 
         do {
-            System.out.flush();
-            int i = 0;
-            for (var movie : movies) {
-                System.out.println((i + 1) + ": " + movie.getTitle());
-                i++;
-            }
+            Print.movies(movies);
 
             System.out.print("Choose a movie: ");
             choice = scanObj.nextInt();
-
         } while (!Check.isValidAnswer(choice, movies));
 
         return movies.get(choice - 1);
@@ -35,8 +28,6 @@ public class Select {
         int choice;
         var screenTimes = movie.getScreenTimes();
         do {
-            System.out.flush();
-
             Print.movieDetails(movie);
 
             System.out.println("Available Screen Times:");
@@ -56,9 +47,9 @@ public class Select {
     }
 
 
-    static LinkedList<Seat> seats(Scanner scanObj, Hall hall) {
+    static ArrayList<Seat> seats (Scanner scanObj, Hall hall) {
         var seats = hall.getSeats();
-        var selectedSeats = new LinkedList<Seat>();
+        var selectedSeats = new ArrayList<Seat>();
         var response = Check.enResponse.UNKNOWN;
 
         do {
@@ -76,7 +67,7 @@ public class Select {
                 continue;
             }
 
-            System.out.print("Enter Hall.Hall.Seat ID to book (e.g., A1): ");
+            System.out.print("Enter Seat ID to book (e.g., A1): ");
             String seatID = scanObj.next();
 
             //! Need to temporarily book seats until payment done
@@ -94,7 +85,6 @@ public class Select {
 
         } while (!hall.isFull());
 
-
         return selectedSeats;
     }
 
@@ -102,7 +92,14 @@ public class Select {
         var seats = hall.getSeats();
         var response = Check.enResponse.UNKNOWN;
 
-        do {
+        while (!selectedSeats.isEmpty()) {
+            System.out.println("Selected seats until now are");
+            System.out.print("{");
+            for (var seat : selectedSeats) {
+                System.out.print(seat.getID() + ", ");
+            }
+            System.out.println("}");
+
             System.out.print("Do you want to cancel booked seat? (y/n) ");
             String answer = scanObj.next();
             response = Check.getResponse(answer);
@@ -115,7 +112,7 @@ public class Select {
                 continue;
             }
 
-            System.out.print("Enter Hall.Hall.Seat ID to cancel (e.g., A1): ");
+            System.out.print("Enter Seat ID to cancel (e.g., A1): ");
             String seatID = scanObj.next();
 
             int row = seatID.charAt(0) - 'A';
@@ -134,23 +131,20 @@ public class Select {
                     break;
                 }
             }
-
             if (!seatFound) {
                 System.out.println("\u001B[31mCannot find seat \"" + seatID + "\" among selected seats.\u001B[0m");
             }
-
-        } while (!selectedSeats.isEmpty());
+       }
     }
 
-
-    static int report(Scanner scanObj, String[] reports) {
+    static int report (Scanner scanObj, String[] reports) {
         int choice;
         do {
             for (int i = 0; i < reports.length; i++) {
                 System.out.println((i + 1) + ": " + reports[i]);
             }
 
-            System.out.println("Enter Which Book.Report to display");
+            System.out.println("Enter Which Report to display");
             choice = scanObj.nextInt();
         } while (!Check.isValidAnswer(choice, reports));
 
