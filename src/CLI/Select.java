@@ -150,7 +150,7 @@ public class Select {
             if (!seatFound) {
                 System.out.println("\u001B[31mCannot find seat \"" + seatID + "\" among selected seats.\u001B[0m");
             }
-       }
+        }
     }
 
     static int report (Scanner scanObj, String[] reports) {

@@ -2,6 +2,7 @@ package CLI;
 import Movie.Movie;
 import Book.Receipt;
 import Hall.Hall;
+import Movie.ScreenTime;
 
 import java.util.List;
 
@@ -31,24 +32,24 @@ public class Print {
         System.out.println("========================================");
     }
 
-    public static void seats(Hall movieHall) {
+    public static void seats(Hall hall) {
         System.out.println("B => Seat is Already Booked");
         System.out.println("F => Seat is Free");
 
-        var seats = movieHall.getSeats();
+        var seats = hall.getSeats();
 
         System.out.println("\t\t\t\t\tScreen\t\t\t\t\t");
         System.out.println("\txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\t");
         System.out.print("    ");
 
-        for (int i = 1; i <= movieHall.getNumberOfCols(); i++) {
+        for (int i = 1; i <= hall.getNumberOfCols(); i++) {
             System.out.print(i + "\t");
         }
         System.out.println();
 
-        for (int row = 0; row < movieHall.getNumberOfRows(); row++) {
+        for (int row = 0; row < hall.getNumberOfRows(); row++) {
             System.out.print((char) ('A' + row) + "\t");
-            for (int col = 0; col < movieHall.getNumberOfCols(); col++) {
+            for (int col = 0; col < hall.getNumberOfCols(); col++) {
                 if (seats[row][col].isAvailable()) {
                     System.out.print("\u001B[32mF\u001B[0m\t");
                 } else {
@@ -62,7 +63,7 @@ public class Print {
     public static void receipt (Receipt receipt) {
         //todo: Implement way to display receipt
         if (receipt != null) {
-            System.out.println("Name : "         + receipt.getCustomerName());
+            System.out.println("Name : "        + receipt.getCustomerName());
             System.out.println("Movie Name : "  + receipt.getMovieName());
             System.out.println("Total Price : " + receipt.getTotalPrice() + " LE");
             System.out.println("Hall ID : "     + receipt.getHallID());

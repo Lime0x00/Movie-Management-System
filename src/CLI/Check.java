@@ -1,7 +1,7 @@
 package CLI;
 
 import Book.Order;
-import Hall.Seat;
+import Hall.Hall;
 import Movie.Movie;
 import Movie.ScreenTime;
 
@@ -34,7 +34,7 @@ public class Check {
         };
     }
 
-    public static boolean confirmMsg (Scanner scanObj, Movie selectedMovie, List<Seat> seats, ScreenTime screenTime) {
+    public static boolean confirmMsg (Scanner scanObj, Movie selectedMovie, List<Hall.Seat> seats, ScreenTime screenTime) {
         if (!seats.isEmpty()) {
             float totalPrice = Order.getPrice(seats);
             var response = Check.enResponse.UNKNOWN;

@@ -16,7 +16,7 @@ public class Report {
     }
     
     /*found the most watched movie(s) between all movies in the movie library */
-    
+
     public static List<Movie> mostWatchedMovie(){
         int sumBookedSeats=0;       //total seats for each movie
         int max=0;      //max for select the most watched movie
@@ -27,8 +27,8 @@ public class Report {
             // Loop through each screening time for the current movie
             for (ScreenTime screenTime : movie.getScreenTimes()) {
 
-                    sumBookedSeats += screenTime.getHall().getBookedSeats();  // Add booked seats to the total
-                
+                sumBookedSeats += screenTime.getHall().getBookedSeats();  // Add booked seats to the total
+
 
             }
             //chack if the total seats of this movie more than max
@@ -41,12 +41,11 @@ public class Report {
             else if(sumBookedSeats == max)
                 // if there movie with total seats equal max the add it to the list
                 mostWatchedMovie.add(movie);
-            
+
         }
 
         return mostWatchedMovie;// return the movie(s)
     }
-
     public static List<Date[]> getCrowdedTimes() {
         List<Date[]> mostCrowdedTimes = new ArrayList<>();  // List to store all equally crowded time periods
         int max = 0;                                        // Variable to store the highest number of booked seats found
@@ -100,6 +99,5 @@ public class Report {
 
         return sumBookedSeats;  // Return the total number of booked seats for the period
     }
-
 }
 

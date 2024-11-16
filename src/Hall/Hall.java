@@ -17,6 +17,13 @@ public class Hall {
         setCols(numberOfCols);
         initializeSeats(numberOfRows, numberOfCols);
     }
+
+    public Hall (Hall other) {
+        setID(other.id);
+        setRows(other.numberOfRows);
+        setCols(other.numberOfCols);
+        initializeSeats(other.numberOfRows, other.numberOfCols);
+    }
     
     
     // setter functions
@@ -91,23 +98,22 @@ public class Hall {
         }
     }
 
-    public boolean bookSeat (String seatID) {
-        int row = seatID.charAt(0) - 'A';
+    public boolean bookSeat (String seatID) {        int row = seatID.charAt(0) - 'A';
         int col = Integer.parseInt(seatID.substring(1)) - 1;
-
         if ((row >= 0 && row < numberOfRows) && (col >= 0 && col < numberOfCols)) {
             if (seats[row][col].isAvailable()) {
-                seats[row][col].setAvailability(false);
-                bookedSeatsCount++;
-                return true;
+            seats[row][col].setAvailability(false);
+            bookedSeatsCount++;
+            return true;
             }else{
-                System.out.println("Error: Seat " + seatID + " is already booked.");
+            System.out.println("Error: Seat " + seatID + " is already booked.");
             }
         }else{
             System.out.println("Error: Seat " + seatID + " is out of bounds.");
         }
         return false;
     }
+
     
     public boolean isFull () {
         return getBookedSeats() == getTotalSeats();
@@ -120,7 +126,7 @@ public class Hall {
  */
 
 //todo: Recheck the code with UML
-public class Seat {
+public static class Seat {
     // Unique identifier for the seat
     private String id;
     
@@ -192,8 +198,6 @@ public class Seat {
         return isAvailable;
     }
 }
-
-
 
 
 }

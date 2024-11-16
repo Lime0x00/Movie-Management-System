@@ -1,8 +1,8 @@
 package Book;
 
+import Hall.Hall;
 import Movie.Movie;
 import Movie.ScreenTime;
-import Hall.Seat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class Customer {
     }
     
 
-    public Receipt bookMovie (ScreenTime screenTime, Movie movie, List<Seat> seats) {
+    public Receipt bookMovie (ScreenTime screenTime, Movie movie, List<Hall.Seat> seats) {
         Receipt receipt = Order.bookMovieTime(this, screenTime, movie, seats);
         if (receipt != null) {
             receipts.add(receipt);

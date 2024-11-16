@@ -47,7 +47,7 @@ public class Menu {
                 case 3 -> listReceipts(scanObj, customer);
                 case 4 -> addMovie(scanObj);
                 case 5 -> deleteMovie(scanObj);
-                case 6 -> addScreenTime(scanObj);
+                case 6 -> addScreenTimes(scanObj);
                 case 7 -> {
                     System.out.println("Exiting the program...");
                     System.exit(0);
@@ -82,6 +82,7 @@ public class Menu {
     }
 
 
+
     public static void generateReports (Scanner scanObj) {
         final String[] reports = {
                 "Number of Sold Seats",
@@ -109,22 +110,20 @@ public class Menu {
                 System.out.println(reports[choice] + " on movie \"" + movie.getTitle() + "\" is " + Report.numberOfSoldSeats(movie));
                 break;
             case 1:
-                
+                var crowdedTimes = Report.getCrowdedTimes();
+                for (var time : crowdedTimes) {
+                    for (var date : time ) {
+                        System.out.println("Date is :" + Format.date(date));
+                    }
+
+                }
+                break;
+            case 2:
                 Movie movie2 = Select.movie(scanObj);
                 ScreenTime screenTime = Select.screenTime(scanObj,movie2);
                 System.out.println(reports[choice] + " on date start: " + screenTime.getStartDate() + "and end: "+screenTime.getEndDate()+" is " + Report.getNumberOfSeats(screenTime.getStartDate(),screenTime.getEndDate()));
-                
                 break;
-            case 2:
-                var crowdedTimes = Report.getCrowdedTimes();
-                    for (var date : crowdedTimes) {
-                        
-                           Format.date(date[0]);
-                           Format.date(date[1]);
-                           
-                    }
-                break;
-              case 3:
+            case 3:
                     System.out.println("the most watched movie(s):");
                     Print.movies(Report.mostWatchedMovie());
                     break;
@@ -293,7 +292,7 @@ public class Menu {
         }
     }
 
-    public static void addScreenTime (Scanner scanObj) {
+    public static void addScreenTimes (Scanner scanObj) {
         var movie = Select.movie(scanObj);
         var hall = Select.selectHall(scanObj);
 

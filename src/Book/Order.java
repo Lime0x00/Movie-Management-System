@@ -2,7 +2,6 @@ package Book;
 
 import Movie.MovieLibrary;
 import Hall.Hall;
-import Hall.Seat;
 import Movie.Movie;
 import Movie.ScreenTime;
 
@@ -17,7 +16,7 @@ public class Order {
       Checks if there are enough available seats in the selected hall, confirms the booking,
       and creates a receipt with booking details.
     */
-    public static Receipt bookMovieTime(Customer customer, ScreenTime screenTime, Movie movie, List<Seat> seats) {
+    public static Receipt bookMovieTime(Customer customer, ScreenTime screenTime, Movie movie, List<Hall.Seat> seats) {
        
         // Confirm the booking with the total price and selected screening details
         if (confirmMsg(getPrice(seats), movie, screenTime)) {
@@ -54,16 +53,16 @@ public class Order {
     }
 
     /*Books the specified seats in a given hall by marking each seat as reserved.*/
-    private static boolean bookSeats(Hall hall, List<Seat> seats, List<String> seatIDs) {
+    private static boolean bookSeats(Hall hall, List<Hall.Seat> seats, List<String> seatIDs) {
         // looping the selected seats
-        for (Seat seat : seats) {
+        for (var seat : seats) {
             // If booking any seat fails, return false
             if (!seat.isAvailable()) {
                 return false;
             }
         }
 
-        for (Seat seat : seats) {
+        for (var seat : seats) {
             String seatID = seat.getID();
             hall.bookSeat(seatID);
             seatIDs.add(seatID);
@@ -81,11 +80,11 @@ public class Order {
 
     /* Calculates the total price for booking the specified seats based on their individual prices. */
     
-    public static float getPrice(List<Seat> seats) {
+    public static float getPrice(List<Hall.Seat> seats) {
         //intial value for calc. the total price
         float totalPrice = 0.0F;
         //looping the selected seats
-        for (Seat seat : seats) {
+        for (Hall.Seat seat : seats) {
             //calc the total price
             totalPrice += seat.getPrice();
         

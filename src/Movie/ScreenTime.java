@@ -2,6 +2,7 @@ package Movie;
 
 import Hall.Hall;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -39,7 +40,7 @@ public class ScreenTime {
         if (hall == null) {
             throw new IllegalArgumentException("Hall cannot be null.");
         }
-        this.hall = hall;
+        this.hall = new Hall(hall);
     }
 
     /**

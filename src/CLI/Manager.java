@@ -31,13 +31,21 @@ public class Manager {
 
     private void initializeLibrary () {
         var hall1 = new Hall((byte) 1, 2, 2);  // 10 * 10 = 100 Seat
+        var hall2 = new Hall((byte) 1, 5, 5);  // 10 * 10 = 100 Seat
         var screenTimes1 = new ArrayList<ScreenTime>();
+        var screenTimes2 = new ArrayList<ScreenTime>();
         halls.add(hall1);
+        halls.add(hall2);
         screenTimes1.add(new ScreenTime(hall1, new Date(2024 - 1900, 10, 21, 12, 20, 30), new Date(2024 - 1900, 10, 21, 14, 20, 30)));
 
+        screenTimes2.add(new ScreenTime(hall1, new Date(2024 - 1900, 11, 21, 1, 0, 0), new Date(2024 - 1900, 11, 21, 2, 0, 0)));
+        screenTimes2.add(new ScreenTime(hall2, new Date(2024 - 1900, 11, 22, 1, 0, 0), new Date(2024 - 1900, 11, 22, 2, 0, 0)));
+
         Movie movie = new Movie("Movie1", enGenre.ROMANTIC, screenTimes1);
+        Movie movie1 = new Movie("Movie2" , enGenre.COMEDY, screenTimes2);
         var movies = new ArrayList<Movie>();
         movies.add(movie);
+        movies.add(movie1);
         MovieLibrary lib = new MovieLibrary(movies);
     }
 
