@@ -15,14 +15,7 @@ import java.util.Date;
 import java.util.ArrayList;
 
 public class Manager {
-    //!TODO
-    // TODO: Add Packages
-    // TODO: Move class Receipt to class Order (Composition)
-    // TODO: Move class seats to class hall (Composition)
-    // TODO: Ensure not including all the library for one class
-    // TODO: Remove confirmMsg() from Order (Check it here)
-    // TODO: Make getPrice() in Order public (In case confirmMsg() is moved here)
-
+    
     /**
      * Static list of available halls in the system.
      */
