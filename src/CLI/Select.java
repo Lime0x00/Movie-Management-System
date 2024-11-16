@@ -1,6 +1,5 @@
 package CLI;
 import Hall.Hall;
-import Hall.Seat;
 import Movie.Movie;
 import Movie.MovieLibrary;
 import Movie.enGenre;
@@ -64,9 +63,9 @@ public class Select {
     }
 
 
-    static ArrayList<Seat> seats (Scanner scanObj, Hall hall) {
+    static ArrayList<Hall.Seat> seats (Scanner scanObj, Hall hall) {
         var seats = hall.getSeats();
-        var selectedSeats = new ArrayList<Seat>();
+        var selectedSeats = new ArrayList<Hall.Seat>();
         var response = Check.enResponse.UNKNOWN;
 
         do {
@@ -105,7 +104,7 @@ public class Select {
         return selectedSeats;
     }
 
-    static void unSelectSeats(Scanner scanObj, List<Seat> selectedSeats, Hall hall) {
+    static void unSelectSeats(Scanner scanObj, List<Hall.Seat> selectedSeats, Hall hall) {
         var seats = hall.getSeats();
         var response = Check.enResponse.UNKNOWN;
 
@@ -137,9 +136,9 @@ public class Select {
 
             boolean seatFound = false;
 
-            Iterator<Seat> iterator = selectedSeats.iterator();
+            Iterator<Hall.Seat> iterator = selectedSeats.iterator();
             while (iterator.hasNext()) {
-                Seat seat = iterator.next();
+                Hall.Seat seat = iterator.next();
                 if (seatID.equals(seat.getID())) {
                     iterator.remove();
                     seats[row][col].setAvailability(true);
