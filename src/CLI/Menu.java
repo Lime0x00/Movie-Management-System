@@ -5,7 +5,10 @@ import Book.Report;
 import Movie.Movie;
 import Movie.MovieLibrary;
 import Movie.ScreenTime;
+import Movie.enGenre;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -133,16 +136,24 @@ public class Menu {
             } while (!Check.isValidAnswer(choice, receipts));
 
             Print.receipt(receipts.get(choice - 1));
+        } else {
+            System.out.println("Cannot find any receipts");
         }
     }
 
     public static void addMovie (Scanner scanObj) {
-        //todo: Implement Adding Movie code
+        String title;
+        enGenre genre;
+        System.out.print("Enter Movie Title: ");
+        title = scanObj.next();
+        genre = Select.genre(scanObj);
+        //todo: Implement A way to add screen times
+        List<ScreenTime> screenTimes =  new ArrayList<>();
+        MovieLibrary.addMovie(new Movie(title, genre, screenTimes));
     }
 
     public static void deleteMovie (Scanner scanObj) {
-       boolean isEmpty = MovieLibrary.getMovies().isEmpty();
-       if (!isEmpty) {
+       if (!MovieLibrary.getMovies().isEmpty()) {
            var response = Check.enResponse.YES;
            do {
                System.out.println("Do you want to delete movie (y/n)");
