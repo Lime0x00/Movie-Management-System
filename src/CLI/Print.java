@@ -1,15 +1,11 @@
 package CLI;
 import Movie.Movie;
 import Book.Receipt;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import Hall.Hall;
-import Movie.ScreenTime;
 
 import java.util.List;
 
 public class Print {
-    //todo: Add Methods here and to be static
     public static void movies (List<Movie> movies) {
         int i = 0;
         for (var movie : movies) {
@@ -20,7 +16,7 @@ public class Print {
     public static void movieDetails(Movie movie) {
         System.out.println("========================================");
         System.out.println("Title: " + movie.getTitle());
-        System.out.println("Duration: " + movie.getDuration());
+        System.out.println("Duration: " + Format.duration(movie.getDuration()));
         System.out.println("Genre: " + movie.getGenre());
         System.out.println("Booked Seats: " + movie.getBookedSeats());
         System.out.println("========================================");
@@ -57,31 +53,18 @@ public class Print {
     public static void receipt (Receipt receipt) {
         //todo: Implement way to display receipt
         if (receipt != null) {
-            //todo: Add Way to display Book.Receipt
-            System.out.println("Name :" + receipt.getCustomerName());
-            System.out.println("Movie Name : " + receipt.getMovieName());
+            System.out.println("Name : "         + receipt.getCustomerName());
+            System.out.println("Movie Name : "  + receipt.getMovieName());
             System.out.println("Total Price : " + receipt.getTotalPrice() + " LE");
-            System.out.println("Hall ID : " + receipt.getHallID());
-            System.out.println("Start Date : " + Format.date(receipt.getEndDate()));
-            System.out.println("End Date : " + Format.date(receipt.getStartDate()));
+            System.out.println("Hall ID : "     + receipt.getHallID());
+            System.out.println("Duration : "    + Format.duration(receipt.getStartDate(), receipt.getEndDate()));
+            System.out.println("Start Date : "  + Format.date(receipt.getEndDate()));
+            System.out.println("End Date : "    + Format.date(receipt.getStartDate()));
         } else {
             System.out.println("\u001B[31mSomething Went Wrong!\u001B[0m\t");
         }
     }
 
-    public static void screenTime (ScreenTime screenTime) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy 'at' HH:mm");
 
-        Date startDate = screenTime.getStartDate();
-        Date endDate = screenTime.getEndDate();
 
-        if (startDate != null && endDate != null) {
-            System.out.printf(" %s (Duration: %s)%n",
-                    dateFormat.format(startDate),
-                    Format.duration(startDate, endDate)
-            );
-        } else {
-            System.out.println("Screen time has null dates.");
-        }
-    }
 }
