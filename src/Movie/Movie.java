@@ -23,7 +23,7 @@ public class Movie {
     private void setGenre (enGenre genre) {this.genre = genre;}
     // setDuration and setScreenTimes methods Not Included In UML but May be helpful
     private void setScreenTimes (List<ScreenTime> screenTimes){
-        if(screenTimes.size() == 0) throw new IllegalArgumentException("ScreenTimes Can't be Empty !");
+        if(screenTimes.isEmpty()) throw new IllegalArgumentException("ScreenTimes Can't be Empty !");
         this.lsScreenTimes = screenTimes;
         this.duration = screenTimes.get(0).getEndDate().getHours()-screenTimes.get(0).getStartDate().getHours();
     }
@@ -40,25 +40,10 @@ public class Movie {
     }
     
     public boolean addScreenTime (ScreenTime screenTime) {
-        if(screenTime == null){
-            System.out.println("Error: Invalid ScreenTime. It Can't be Null !");
-            return false;
-        }
-        else if(lsScreenTimes.contains(screenTime)){
-            System.out.println("Error: ScreenTime Already Exist. It Can't be Duplicated !");
-            return false;
-        }
-        lsScreenTimes.add(screenTime);
-        System.out.println("ScreenTime Added Successfully.");
-        return true;  
+        return lsScreenTimes.add(screenTime);
     }
     
     public boolean hasScreenTime (ScreenTime screenTime) {
-        if(lsScreenTimes.contains(screenTime)){
-            return true;
-        }else{
-            System.out.println("Error: This ScreenTime not found.");
-            return false;
-        }    
+        return lsScreenTimes.contains(screenTime);
     }
 }

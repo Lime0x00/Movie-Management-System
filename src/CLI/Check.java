@@ -5,6 +5,7 @@ import Hall.Seat;
 import Movie.Movie;
 import Movie.ScreenTime;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -64,4 +65,18 @@ public class Check {
         return false;
     }
 
+    public static boolean datesOverlap(Date start1, Date end1, Date start2, Date end2) {
+        return !(end1.before(start2) || start1.after(end2));
+    }
+
+    public static boolean isTodayOrWithinOneWeek(Date date) {
+        // Get the current time
+        Date now = new Date();
+
+        // Calculate one week from now
+        Date oneWeekFromNow = new Date(now.getTime() + (7L * 24 * 60 * 60 * 1000)); // 7 days in milliseconds
+
+        // Check if the date is today or within the next 7 days
+        return !date.before(now) && !date.after(oneWeekFromNow);
+    }
 }

@@ -23,6 +23,7 @@ public class Menu {
             "List Receipts",
             "Add Movie",
             "Delete Movie",
+            "Add Screen Time",
             "Log-out",
     };
 
@@ -46,9 +47,10 @@ public class Menu {
                 case 3 -> listReceipts(scanObj, customer);
                 case 4 -> addMovie(scanObj);
                 case 5 -> deleteMovie(scanObj);
-                case 6 -> {
+                case 6 -> addScreenTime(scanObj);
+                case 7 -> {
                     System.out.println("Exiting the program...");
-                    System.exit(0); // Close the CLI (terminate the program)
+                    System.exit(0);
                 }
             }
             System.out.println("Enter Any Key to continue");
@@ -91,8 +93,8 @@ public class Menu {
          * ex:
          * 1: Number of Sold Seats
          * 2: Number of Seats on interval [02:00 - 04:00]
-         * 3: Book.Report for most crowded time
-         * 4: Book.Report for most watched film
+         * 3: Report for most crowded time
+         * 4: Report for most watched film
          * etc.
          * */
 
@@ -159,7 +161,7 @@ public class Menu {
             year = scanner.nextInt();
 
             System.out.println("Enter the month (1-12): ");
-            month = scanner.nextInt() - 1; // Subtract 1 because months are 0-based in `Date`
+            month = scanner.nextInt() - 1;
 
             System.out.println("Enter the day (1-31): ");
             day = scanner.nextInt();
@@ -173,11 +175,9 @@ public class Menu {
             System.out.println("Enter the second (0-59): ");
             second = scanner.nextInt();
 
-            // Constructing the Date object
             date = new Date(year - 1900, month, day, hour, minute, second);
 
-            // Check if the date is today or within one week
-            if (isTodayOrWithinOneWeek(date)) {
+            if (Check.isTodayOrWithinOneWeek(date)) {
                 validDate = true;
             } else {
                 System.out.println("The date you entered is not today or within one week from now. Please try again.");
@@ -187,34 +187,61 @@ public class Menu {
         return date;
     }
 
-    public static boolean isTodayOrWithinOneWeek(Date date) {
-        // Get the current time
-        Date now = new Date();
 
-        // Calculate one week from now
-        Date oneWeekFromNow = new Date(now.getTime() + (7L * 24 * 60 * 60 * 1000)); // 7 days in milliseconds
 
-        // Check if the date is today or within the next 7 days
-        return !date.before(now) && !date.after(oneWeekFromNow);
-    }
-
-    public static void addMovie (Scanner scanObj) {
+    public static void addMovie(Scanner scanObj) {
         System.out.print("Enter Movie Title: ");
+        scanObj.nextLine();
         String title = scanObj.nextLine();
         enGenre genre = Select.genre(scanObj);
-        List<ScreenTime> screenTimes =  new ArrayList<>();
+        List<ScreenTime> screenTimes = new ArrayList<>();
+
+        var response = Check.enResponse.YES;
+
+        while (response == Check.enResponse.YES) {
+            var hall = Select.selectHall(scanObj);
+
+            Date startDate = getDateFromUser();
+
+            Date endDate = getDateFromUser();
+
+            if (endDate.before(startDate)) {
+                System.out.println("Error: End date must be after start date.");
+                continue;
+            }
+
+            var screenTime = new ScreenTime(hall, startDate, endDate);
+
+            boolean conflict = false;
+            for (var existingScreenTime : screenTimes) {
+                if (existingScreenTime.getHall().equals(hall)) {
+                    if (Check.datesOverlap(startDate, endDate, existingScreenTime.getStartDate(), existingScreenTime.getEndDate())) {
+                        conflict = true;
+                        break;
+                    }
+                }
+            }
+
+            if (conflict) {
+                System.out.println("Error: ScreenTime overlaps with an existing entry in the same hall.");
+            } else {
+                screenTimes.add(screenTime);
+                System.out.println("Screen Time Added.");
+            }
+
+            System.out.print("Do you want to add more screen times? (y/n): ");
+            response = Check.getResponse(scanObj.next());
+        }
 
         Movie newMovie = new Movie(title, genre, screenTimes);
 
-        if (MovieLibrary.hasMovie(newMovie)){
-            System.out.println(title + " Already added Before");
-            
-        }else{
+        if (MovieLibrary.hasMovie(newMovie)) {
+            System.out.println(title + " has already been added before.");
+        } else {
             MovieLibrary.addMovie(newMovie);
-            System.out.println(title + " has been Added Successfully.");
+            System.out.println(title + " has been added successfully.");
         }
     }
-
     public static void deleteMovie (Scanner scanObj) {
         if (!MovieLibrary.getMovies().isEmpty()) {
             var response = Check.enResponse.YES;
@@ -261,5 +288,30 @@ public class Menu {
         }else{
             System.out.println("\u001B[31mError: No movies available to delete.\u001B[0m");
         }
+    }
+
+    public static void addScreenTime (Scanner scanObj) {
+        var movie = Select.movie(scanObj);
+        var hall = Select.selectHall(scanObj);
+
+        System.out.println("Enter Start Date");
+        Date startDate = getDateFromUser();
+
+        System.out.println("Enter End Date");
+        Date endDate = getDateFromUser();
+
+        var screenTime = new ScreenTime(hall, startDate, endDate);
+
+        var screenTimes = movie.getScreenTimes();
+        if(screenTime == null){
+            System.out.println("Error: Invalid ScreenTime. It Can't be Null !");
+        } else if(movie.hasScreenTime(screenTime)){
+            System.out.println("Error: ScreenTime Already Exist. It Can't be Duplicated !");
+        }
+
+        if (movie.addScreenTime(screenTime)) {
+            System.out.println("ScreenTime Added Successfully.");
+        }
+
     }
 }

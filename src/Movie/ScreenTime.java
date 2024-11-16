@@ -106,17 +106,4 @@ public class ScreenTime {
         return endDate;
     }
 
-    /**
-     * Checks if the passed ScreenTime exists based on start and end dates.
-     *
-     * @param otherScreenTime The other ScreenTime to compare. Must not be null.
-     * @return true if both ScreenTimes have the same start and end dates; false otherwise.
-     * @throws IllegalArgumentException if otherScreenTime is null.
-     */
-    public boolean hasScreenTime (ScreenTime otherScreenTime) {
-        if (otherScreenTime == null) {
-            throw new IllegalArgumentException("ScreenTime to compare cannot be null.");
-        }
-        return this.startDate.equals(otherScreenTime.getStartDate()) && this.endDate.equals(otherScreenTime.getEndDate());
-    }
 }

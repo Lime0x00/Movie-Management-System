@@ -9,7 +9,7 @@ public class MovieLibrary {
         MovieLibrary.movies = movies;
     }
 
-    public static boolean addMovie(Movie movie) {
+    public static boolean addMovie (Movie movie) {
         return movies.add(movie);
     }
 
