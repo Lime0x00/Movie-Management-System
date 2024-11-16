@@ -45,9 +45,10 @@ public class Menu {
                 case 2 -> generateReports(scanObj);
                 case 3 -> listReceipts(scanObj, customer);
                 case 4 -> addMovie(scanObj);
-                case 6 -> deleteMovie(scanObj);
-                case 5 -> {
-                    return;
+                case 5 -> deleteMovie(scanObj);
+                case 6 -> {
+                    System.out.println("Exiting the program...");
+                    System.exit(0); // Close the CLI (terminate the program)
                 }
             }
             System.out.println("Enter Any Key to continue");
