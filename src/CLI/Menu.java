@@ -91,10 +91,10 @@ public class Menu {
         };
         /*
          * ex:
-         * 1: Number of Sold Seats
-         * 2: Number of Seats on interval [02:00 - 04:00]
-         * 3: Report for most crowded time
-         * 4: Report for most watched film
+         * 1: Number of Sold Seats -Done-
+         * 2: Number of Seats on interval [02:00 - 04:00]-done
+         * 3: Book.Report for most crowded time -done-
+         * 4: Book.Report for most watched film
          * etc.
          * */
 
@@ -109,25 +109,28 @@ public class Menu {
                 System.out.println(reports[choice] + " on movie \"" + movie.getTitle() + "\" is " + Report.numberOfSoldSeats(movie));
                 break;
             case 1:
-                System.out.println();
+                
+                Movie movie2 = Select.movie(scanObj);
+                ScreenTime screenTime = Select.screenTime(scanObj,movie2);
+                System.out.println(reports[choice] + " on date start: " + screenTime.getStartDate() + "and end: "+screenTime.getEndDate()+" is " + Report.getNumberOfSeats(screenTime.getStartDate(),screenTime.getEndDate()));
+                
                 break;
             case 2:
                 var crowdedTimes = Report.getCrowdedTimes();
-//                    for (var list : crowdedTimes) {
-//                        for (var dt : list) {
-//                           System.out.println("Start Date" + dt[0]);
-//                           System.out.println("End Date" + dt[1]);
-//                        }
-//                    }
+                    for (var date : crowdedTimes) {
+                        
+                           Format.date(date[0]);
+                           Format.date(date[1]);
+                           
+                    }
                 break;
-//              case 3:
-//                    System.out.println(Book.Report.mostWatchedFilm());
-//                    break;
+              case 3:
+                    System.out.println("the most watched movie(s):");
+                    Print.movies(Report.mostWatchedMovie());
+                    break;
         }
 
     }
-
-
     public static void listReceipts (Scanner scanObj, Customer customer) {
         int choice;
         var receipts = customer.getReceipts();
