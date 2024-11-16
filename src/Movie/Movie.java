@@ -11,11 +11,11 @@ public class Movie {
     private List<ScreenTime> lsScreenTimes;
 
     
-    public Movie(String title, enGenre genre, float duration, List<ScreenTime> screenTimes) {
+    public Movie(String title, enGenre genre, List<ScreenTime> screenTimes) {
+        //! todo:Fix Bug in setting duration of the movie
         setID();
         setTitle(title);
         setGenre(genre);
-        setDuration(duration);
         setScreenTimes(screenTimes);
     }
 
@@ -24,7 +24,6 @@ public class Movie {
     private void setTitle (String title) {this.title = title;}
     private void setGenre (enGenre genre) {this.genre = genre;}
     // setDuration and setScreenTimes methods Not Included In UML but May be helpful
-    private void setDuration (float duration) {this.duration = duration;}
     private void setScreenTimes (List<ScreenTime> screenTimes){this.lsScreenTimes = screenTimes;}
 
     // getter functions
