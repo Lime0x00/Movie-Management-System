@@ -1,5 +1,6 @@
 package CLI;
 
+import Application.Format;
 import Book.Order;
 import Hall.Seat;
 import Movie.Movie;
@@ -42,10 +43,12 @@ public class Check {
                 System.out.println("Price all is " + totalPrice);
                 System.out.println("Movie Title: " + selectedMovie.getTitle());
                 System.out.println("Hall ID: " + screenTime.getHall().getID());
-                System.out.print("Screen Time: ");
-                Print.screenTime(screenTime);
+                System.out.println("Start Date: " + Format.date(screenTime.getStartDate()));
+                System.out.println("End Date: " + Format.date(screenTime.getEndDate()));
+                System.out.println("Duration: " + Format.duration(selectedMovie.getDuration()));
 
-                System.out.println("Seats: ");
+
+                System.out.print("Seats: ");
                 for (var seat : seats) {
                     System.out.print(seat.getID() + ", ");
                 }
