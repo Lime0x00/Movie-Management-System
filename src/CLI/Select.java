@@ -3,12 +3,11 @@ import Hall.Hall;
 import Hall.Seat;
 import Movie.Movie;
 import Movie.MovieLibrary;
+import Movie.enGenre;
 import Movie.ScreenTime;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
+
 public class Select {
     static Movie movie (Scanner scanObj) {
         int choice;
@@ -35,8 +34,12 @@ public class Select {
             for (int i = 0; i < screenTimes.size(); i++) {
                 var screenTime = screenTimes.get(i);
                 if (!screenTime.getHall().isFull()) { //Check if all seats hasn't been booked yet
-                    System.out.print((i + 1) + ": ");
-                    Print.screenTime(screenTime);
+                    Date startDate = screenTime.getStartDate();
+                    System.out.printf("%d: %s (Duration: %s)%n",
+                            i + 1,
+                            Format.date(startDate),
+                            Format.duration(movie.getDuration())
+                    );
                 }
             }
             System.out.print("Choose your preferred screen time: ");
@@ -149,5 +152,22 @@ public class Select {
         } while (!Check.isValidAnswer(choice, reports));
 
         return choice;
+    }
+
+    static enGenre genre (Scanner scanObj) {
+        int choice = -1;
+        enGenre[] genres = enGenre.values();
+
+        do {
+            System.out.println("Choose genre:");
+            for (int i = 0; i < genres.length; i++) {
+                System.out.println((i + 1) + ". " + genres[i].getGenre());
+            }
+
+            System.out.print("Enter your choice (1-" + genres.length + "): ");
+            choice = scanObj.nextInt();
+        } while (!Check.isValidAnswer(choice, genres));
+
+        return genres[choice - 1];
     }
 }
