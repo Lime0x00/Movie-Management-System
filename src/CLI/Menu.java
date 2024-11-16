@@ -198,60 +198,68 @@ public class Menu {
         return !date.before(now) && !date.after(oneWeekFromNow);
     }
 
-
     public static void addMovie (Scanner scanObj) {
-        String title;
-        enGenre genre;
         System.out.print("Enter Movie Title: ");
-        title = scanObj.next();
-        genre = Select.genre(scanObj);
-        //todo: Implement A way to add screen times
-
-
-        Date startDate = getDateFromUser();
-        Date endDate = getDateFromUser();
-        var hall = Select.selectHall(scanObj);
-
+        String title = scanObj.nextLine();
+        enGenre genre = Select.genre(scanObj);
         List<ScreenTime> screenTimes =  new ArrayList<>();
-        screenTimes.add(new ScreenTime(hall, startDate, endDate));
-        MovieLibrary.addMovie(new Movie(title, genre, screenTimes));
+
+        Movie newMovie = new Movie(title, genre, screenTimes);
+
+        if (MovieLibrary.hasMovie(newMovie)){
+            System.out.println(title + " Already added Before");
+            
+        }else{
+            MovieLibrary.addMovie(newMovie);
+            System.out.println(title + " has been Added Successfully.");
+        }
     }
 
     public static void deleteMovie (Scanner scanObj) {
-       if (!MovieLibrary.getMovies().isEmpty()) {
-           var response = Check.enResponse.YES;
-           do {
-               System.out.println("Do you want to delete movie (y/n)");
-               response = Check.getResponse(scanObj.next());
+        if (!MovieLibrary.getMovies().isEmpty()) {
+            var response = Check.enResponse.YES;
+            do {
+                System.out.println("Do you want to delete movie (y/n)");
+                response = Check.getResponse(scanObj.next());
 
-               if (response == Check.enResponse.UNKNOWN) {
-                   System.out.println("Invalid option. Please try again.");
-                   continue;
-               }
+                if (response == Check.enResponse.UNKNOWN) {
+                    System.out.println("Invalid option. Please try again.");
+                    continue;
+                }
 
-               if (response == Check.enResponse.NO) {
-                   break;
-               }
+                if (response == Check.enResponse.NO) {
+                    break;
+                }
 
-               var movie = Select.movie(scanObj);
+                var movie = Select.movie(scanObj);
+                
+                if (!MovieLibrary.hasMovie(movie)) {
+                    System.out.println("\u001B[31mError: Movie \"" + movie.getTitle() + "\" not found.\u001B[0m");
+                    continue;
+                }
 
-               System.out.println("Are you sure you want delete "+ movie.getTitle() + " movie ?"+" Y/N" );
-               response = Check.getResponse(scanObj.next());
+                System.out.println("Are you sure you want to delete the movie \"" + movie.getTitle() + "\"? (y/n)");
+                response = Check.getResponse(scanObj.next());
 
-               switch (response) {
-                   case YES:
-                       if (MovieLibrary.deleteMovie(movie)) {
-                           System.out.println(movie.getTitle() + " has been deleted Successfully.");
-                           System.out.println("\u001B[32mMovie \"" + movie.getTitle() +"\" Deleted Successfully\u001B[0m\t");
-                       } else {
-                           System.out.println("\u001B[32mSomething Went Wrong Cannot Delete This Movie\u001B[0m\t");
-                       }
-                       break;
-                   case NO:
-                       System.out.println("Error: Deletion canceled.");
+                switch (response) {
+                    case YES:
+                        if (MovieLibrary.deleteMovie(movie)) {
+                            System.out.println(movie.getTitle() + " has been deleted Successfully.");
+                            System.out.println("\u001B[32mMovie \"" + movie.getTitle() +"\" Deleted Successfully\u001B[0m\t");
+                        } else {
+                            System.out.println("\u001B[32mSomething Went Wrong Cannot Delete This Movie\u001B[0m\t");
+                        }
                         break;
-               }
-           } while (response == Check.enResponse.YES && !MovieLibrary.getMovies().isEmpty());
-       }
+                    case NO:
+                        System.out.println("Error: Deletion canceled.");
+                        break;
+                    default:
+                        System.out.println("something wrong cannot Delete this movie.");
+                        break;
+                }
+            } while (response == Check.enResponse.YES && !MovieLibrary.getMovies().isEmpty());
+        }else{
+            System.out.println("\u001B[31mError: No movies available to delete.\u001B[0m");
+        }
     }
 }
