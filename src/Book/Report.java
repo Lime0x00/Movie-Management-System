@@ -10,12 +10,44 @@ import java.util.List;
 
 
 public class Report {
-
+       
     public static int numberOfSoldSeats(Movie movie){
-        return movie.getBookedSeats();
+        return movie.getBookedSeats(); //return the number of sold seats for this movie 
+    }
+    
+    /*found the most watched movie(s) between all movies in the movie library */
+    
+    public static List<Movie> mostWatchedMovie(){
+        int sumBookedSeats=0;       //total seats for each movie
+        int max=0;      //max for select the most watched movie
+        List<Movie> mostWatchedMovie=new ArrayList<>();          //list of most watched movie if there more than one has same total number of seats
+        //loop every movie in the movie library
+        for (Movie movie : MovieLibrary.getMovies()) {
+            sumBookedSeats=0; //re-initialize the total for next movie
+            // Loop through each screening time for the current movie
+            for (ScreenTime screenTime : movie.getScreenTimes()) {
+
+                    sumBookedSeats += screenTime.getHall().getBookedSeats();  // Add booked seats to the total
+                
+
+            }
+            //chack if the total seats of this movie more than max
+            if(sumBookedSeats>max){
+                //if tru the clear the list from movie and update the max and add the new movie to the list
+                mostWatchedMovie.clear();
+                max=sumBookedSeats;
+                mostWatchedMovie.add(movie);
+            }
+            else if(sumBookedSeats == max)
+                // if there movie with total seats equal max the add it to the list
+                mostWatchedMovie.add(movie);
+            
+        }
+
+        return mostWatchedMovie;// return the movie(s)
     }
 
-   public static List<Date[]> getCrowdedTimes() {
+    public static List<Date[]> getCrowdedTimes() {
         List<Date[]> mostCrowdedTimes = new ArrayList<>();  // List to store all equally crowded time periods
         int max = 0;                                        // Variable to store the highest number of booked seats found
         int tempMax=0;
