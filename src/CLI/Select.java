@@ -23,6 +23,20 @@ public class Select {
         return movies.get(choice - 1);
     }
 
+    static Hall selectHall(Scanner scanObj) {
+        int choice;
+        var halls = Manager.halls;
+
+        do {
+            Print.halls(halls);
+
+            System.out.print("Choose a hall: ");
+            choice = scanObj.nextInt();
+        } while (!Check.isValidAnswer(choice, halls));
+
+        return halls.get(choice - 1);
+    }
+
     static ScreenTime screenTime(Scanner scanObj, Movie movie) {
         int choice;
         var screenTimes = movie.getScreenTimes();

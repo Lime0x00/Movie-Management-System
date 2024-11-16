@@ -13,6 +13,15 @@ public class Print {
             i++;
         }
     }
+
+    public static void halls (List<Hall> halls) {
+        int i = 0;
+        for (var hall : halls) {
+            System.out.println((i + 1) + ": " + hall.getID());
+            i++;
+        }
+    }
+
     public static void movieDetails(Movie movie) {
         System.out.println("========================================");
         System.out.println("Title: " + movie.getTitle());

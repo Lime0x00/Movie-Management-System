@@ -16,6 +16,7 @@ public class Movie {
         setID();
         setTitle(title);
         setGenre(genre);
+        // todo: check if screenTimes is valid
         setScreenTimes(screenTimes);
     }
 
@@ -24,7 +25,11 @@ public class Movie {
     private void setTitle (String title) {this.title = title;}
     private void setGenre (enGenre genre) {this.genre = genre;}
     // setDuration and setScreenTimes methods Not Included In UML but May be helpful
-    private void setScreenTimes (List<ScreenTime> screenTimes){this.lsScreenTimes = screenTimes;}
+    private void setScreenTimes (List<ScreenTime> screenTimes){
+        if(screenTimes.size() == 0) throw new IllegalArgumentException("ScreenTimes Can't be Empty !");
+        this.lsScreenTimes = screenTimes;
+        this.duration = screenTimes.get(0).getEndDate().getHours()-screenTimes.get(0).getStartDate().getHours();
+    }
 
     // getter functions
     public int getID () {return id;}

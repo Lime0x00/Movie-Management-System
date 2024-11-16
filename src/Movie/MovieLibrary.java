@@ -1,6 +1,7 @@
 package Movie;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class MovieLibrary {
     private static List<Movie> movies;
@@ -15,9 +16,12 @@ public class MovieLibrary {
         return true;
     }
 
-    public boolean deleteMovie (Movie movie) {
+    // 1. add static
+    static public boolean deleteMovie (Movie movie) {
         if(hasMovie(movie)){
             System.out.println("Are you sure you want delete "+ movie.getTitle() + " movie ?"+" Y/N" );
+            // 2. add scanner
+            Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim().toLowerCase();
             if(input.equals("y")){
                 movies.remove(movie);

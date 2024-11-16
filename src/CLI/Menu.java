@@ -7,9 +7,14 @@ import Movie.MovieLibrary;
 import Movie.ScreenTime;
 import Movie.enGenre;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 
 public class Menu {
     static final String[] mainMenu = {
@@ -141,6 +146,58 @@ public class Menu {
         }
     }
 
+    public static Date getDateFromUser() {
+        Scanner scanner = new Scanner(System.in);
+
+        int year, month, day, hour, minute, second;
+        Date date = null;
+        boolean validDate = false;
+
+        while (!validDate) {
+            System.out.println("Enter the year (e.g., 2024): ");
+            year = scanner.nextInt();
+
+            System.out.println("Enter the month (1-12): ");
+            month = scanner.nextInt() - 1; // Subtract 1 because months are 0-based in `Date`
+
+            System.out.println("Enter the day (1-31): ");
+            day = scanner.nextInt();
+
+            System.out.println("Enter the hour (0-23): ");
+            hour = scanner.nextInt();
+
+            System.out.println("Enter the minute (0-59): ");
+            minute = scanner.nextInt();
+
+            System.out.println("Enter the second (0-59): ");
+            second = scanner.nextInt();
+
+            // Constructing the Date object
+            date = new Date(year - 1900, month, day, hour, minute, second);
+
+            // Check if the date is today or within one week
+            if (isTodayOrWithinOneWeek(date)) {
+                validDate = true;
+            } else {
+                System.out.println("The date you entered is not today or within one week from now. Please try again.");
+            }
+        }
+
+        return date;
+    }
+
+    public static boolean isTodayOrWithinOneWeek(Date date) {
+        // Get the current time
+        Date now = new Date();
+
+        // Calculate one week from now
+        Date oneWeekFromNow = new Date(now.getTime() + (7L * 24 * 60 * 60 * 1000)); // 7 days in milliseconds
+
+        // Check if the date is today or within the next 7 days
+        return !date.before(now) && !date.after(oneWeekFromNow);
+    }
+
+
     public static void addMovie (Scanner scanObj) {
         String title;
         enGenre genre;
@@ -148,7 +205,14 @@ public class Menu {
         title = scanObj.next();
         genre = Select.genre(scanObj);
         //todo: Implement A way to add screen times
+
+
+        Date startDate = getDateFromUser();
+        Date endDate = getDateFromUser();
+        var hall = Select.selectHall(scanObj);
+
         List<ScreenTime> screenTimes =  new ArrayList<>();
+        screenTimes.add(new ScreenTime(hall, startDate, endDate));
         MovieLibrary.addMovie(new Movie(title, genre, screenTimes));
     }
 

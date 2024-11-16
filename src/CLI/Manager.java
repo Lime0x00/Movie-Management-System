@@ -21,6 +21,9 @@ public class Manager {
     //todo: Remove confirmMsg() from Order (Check it here)
     //todo: Make getPrice() In Order public (In Case Confirm Message here not in Order)
 
+    static public ArrayList<Hall> halls = new ArrayList<Hall>();
+
+
     public Manager (Scanner scanObj) {
         initializeLibrary();
         start(scanObj);
@@ -29,7 +32,7 @@ public class Manager {
     private void initializeLibrary () {
         var hall1 = new Hall((byte) 1, 2, 2);  // 10 * 10 = 100 Seat
         var screenTimes1 = new ArrayList<ScreenTime>();
-
+        halls.add(hall1);
         screenTimes1.add(new ScreenTime(hall1, new Date(2024 - 1900, 10, 21, 12, 20, 30), new Date(2024 - 1900, 10, 21, 14, 20, 30)));
 
         Movie movie = new Movie("Movie1", enGenre.ROMANTIC, screenTimes1);
