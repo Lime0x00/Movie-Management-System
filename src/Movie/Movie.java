@@ -12,15 +12,12 @@ public class Movie {
 
     
     public Movie(String title, enGenre genre, List<ScreenTime> screenTimes) {
-        //! todo:Fix Bug in setting duration of the movie
         setID();
         setTitle(title);
         setGenre(genre);
-        // todo: check if screenTimes is valid
         setScreenTimes(screenTimes);
     }
 
-    // setter functions
     private void setID () {id = lastID++;}
     private void setTitle (String title) {this.title = title;}
     private void setGenre (enGenre genre) {this.genre = genre;}
@@ -31,7 +28,6 @@ public class Movie {
         this.duration = screenTimes.get(0).getEndDate().getHours()-screenTimes.get(0).getStartDate().getHours();
     }
 
-    // getter functions
     public int getID () {return id;}
     public String getTitle () {return title;} 
     public String getGenre () {return genre.getGenre();}
@@ -44,8 +40,6 @@ public class Movie {
     }
     
     public boolean addScreenTime (ScreenTime screenTime) {
-        // Some Checks to see this is valid or not 
-        // In Case There is a schedule to hall
         if(screenTime == null){
             System.out.println("Error: Invalid ScreenTime. It Can't be Null !");
             return false;
@@ -56,7 +50,7 @@ public class Movie {
         }
         lsScreenTimes.add(screenTime);
         System.out.println("ScreenTime Added Successfully.");
-        return true; // Just A placeholder   
+        return true;  
     }
     
     public boolean hasScreenTime (ScreenTime screenTime) {
