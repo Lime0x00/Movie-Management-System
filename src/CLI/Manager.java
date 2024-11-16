@@ -21,12 +21,6 @@ public class Manager {
     //todo: Remove confirmMsg() from Order (Check it here)
     //todo: Make getPrice() In Order public (In Case Confirm Message here not in Order)
 
-    //!Changes
-    //! Added getNumberOfRows() to hall
-    //! Added getNumberOfCols() to hall
-    //! Added getSeats to hall (Must be changed boolean[][])
-    //! There is some error movie selectedSeats as Hall.Hall.Seat cannot book it as it already booked
-
     public Manager (Scanner scanObj) {
         initializeLibrary();
         start(scanObj);
@@ -38,7 +32,7 @@ public class Manager {
 
         screenTimes1.add(new ScreenTime(hall1, new Date(2024 - 1900, 10, 21, 12, 20, 30), new Date(2024 - 1900, 10, 21, 14, 20, 30)));
 
-        Movie movie = new Movie("Movie1", enGenre.ROMANTIC, 1.15f, screenTimes1 );
+        Movie movie = new Movie("Movie1", enGenre.ROMANTIC, screenTimes1);
         var movies = new ArrayList<Movie>();
         movies.add(movie);
         MovieLibrary lib = new MovieLibrary(movies);
@@ -46,7 +40,7 @@ public class Manager {
 
 
     public void start (Scanner scanObj) {
-        java.lang.System.out.print("Enter your name: ");
+        System.out.print("Enter your name: ");
         String name = scanObj.next();
 
         java.lang.System.out.print("Enter your age: ");
@@ -58,6 +52,4 @@ public class Manager {
 
         Menu.mainMenu(scanObj, customer);
     }
-
-
 }
