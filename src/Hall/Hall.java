@@ -4,25 +4,13 @@ import static Hall.enClass.FIRST;
 import static Hall.enClass.SECOND;
 import static Hall.enClass.THIRD;
 
-/**
- * Represents a movie theater hall with rows and columns of seats. 
- * Each seat has an ID, availability, price, and class type. 
- * The class also handles the booking and management of seats.
- */
 public class Hall {
-    private byte id; // Unique identifier for the hall
-    private int numberOfRows; // Number of rows in the hall
-    private int numberOfCols; // Number of columns in the hall
-    private int bookedSeatsCount; // Counter for booked seats
-    private Seat[][] seats; // 2D array representing the seats in the hall
-
-    /**
-     * Constructor to initialize a Hall object with the given ID, number of rows, and columns.
-     *
-     * @param id          The unique identifier for the hall. Must be between 1 and 126.
-     * @param numberOfRows The number of rows in the hall. Must be at least 1 and at most 26 (A-Z).
-     * @param numberOfCols The number of columns in the hall. Must be at least 1.
-     */
+    private byte id;
+    private int numberOfRows;
+    private int numberOfCols;
+    private int bookedSeatsCount;
+    private Seat[][] seats;
+    
     public Hall(byte id, int numberOfRows, int numberOfCols) {
         setID(id);
         setRows(numberOfRows);
@@ -30,157 +18,75 @@ public class Hall {
         initializeSeats(numberOfRows, numberOfCols);
     }
 
-    /**
-     * Copy constructor to create a new Hall object from an existing one.
-     *
-     * @param other The existing Hall object to copy.
-     */
-    public Hall(Hall other) {
+    public Hall (Hall other) {
         setID(other.id);
         setRows(other.numberOfRows);
         setCols(other.numberOfCols);
         initializeSeats(other.numberOfRows, other.numberOfCols);
     }
-
-    // Setter Methods
-
-    /**
-     * Sets the ID of the hall. Must be between 1 and 126.
-     *
-     * @param id The unique identifier for the hall.
-     */
-    public void setID(byte id) {
+    
+    
+    // setter functions
+    public void setID (byte id) {
         if (id > 0 && id < 127) {
             this.id = id;
-        } else {
+        }else{
             System.out.println("Error: Invalid ID - must be between 1 and 126.");
         }
     }
-
-    /**
-     * Sets the seat ID based on its position in the row and column.
-     *
-     * @param row The row index of the seat.
-     * @param col The column index of the seat.
-     */
+    
     private void setSeatID(int row, int col) {
         if (row < 0 || row >= numberOfRows || col < 0 || col >= numberOfCols) {
             System.out.println("Error: Invalid seat position - row or column out of bounds.");
-        } else {
-            String seatID = "" + (char) ('A' + row) + (col + 1);
+        }else{
+            String seatID;
+            char rowLetter = (char) ('A' + row);
+            int colIdx = col + 1;
+            seatID = "" + rowLetter + colIdx;
             seats[row][col].setID(seatID);
         }
     }
 
-    /**
-     * Sets the number of rows in the hall. Must be at least 1 and at most 26.
-     *
-     * @param numberOfRows The number of rows in the hall.
-     */
-    private void setRows(int numberOfRows) {
+    private void setRows (int numberOfRows) {
+        //Number of English Characters
         if (numberOfRows >= 1) {
             this.numberOfRows = Math.min(numberOfRows, 26);
-        } else {
+        }else{
             System.out.println("Error: Number of rows must be at least 1.");
         }
+        
     }
-
-    /**
-     * Sets the number of columns in the hall. Must be at least 1.
-     *
-     * @param numberOfCols The number of columns in the hall.
-     */
-    private void setCols(int numberOfCols) {
+    
+    private void setCols (int numberOfCols) {
         if (numberOfCols >= 1) {
             this.numberOfCols = numberOfCols;
-        } else {
+        }else{
             System.out.println("Error: Number of columns must be at least 1.");
         }
     }
-
-    /**
-     * Sets the class of a seat based on its row position.
-     *
-     * @param row The row index of the seat.
-     * @param col The column index of the seat.
-     */
+    
     private void setSeatClass(int row, int col) {
-        int firstClassLimit = (int) Math.ceil(0.2 * numberOfRows); // Top 20% rows are first class
-        int secondClassLimit = firstClassLimit + (int) Math.ceil(0.5 * numberOfRows); // Next 50% are second class
-
-        if (row < firstClassLimit) {
-            seats[row][col].setClass(FIRST);
-        } else if (row < secondClassLimit) {
-            seats[row][col].setClass(SECOND);
+        int firstClassLimit = (int) Math.ceil(0.2 * numberOfRows); // 20% to first class
+        int secondClassLimit = firstClassLimit + (int) Math.ceil(0.5 * numberOfRows); // 50% to second class
+        // the rest to third class
+        if (row >= 0 && row < firstClassLimit) {
+            seats[row][col].setClass(enClass.FIRST);
+        } else if (row >= firstClassLimit && row < secondClassLimit) {
+            seats[row][col].setClass(enClass.SECOND);
         } else {
-            seats[row][col].setClass(THIRD);
+            seats[row][col].setClass(enClass.THIRD);
         }
     }
-
-    // Getter Methods
-
-    /**
-     * Gets the total number of seats in the hall.
-     *
-     * @return The total number of seats.
-     */
-    public int getTotalSeats() {
-        return numberOfRows * numberOfCols;
-    }
-
-    /**
-     * Gets the total number of booked seats in the hall.
-     *
-     * @return The number of booked seats.
-     */
-    public int getBookedSeats() {
-        return bookedSeatsCount;
-    }
-
-    /**
-     * Gets the ID of the hall.
-     *
-     * @return The hall ID.
-     */
-    public int getID() {
-        return id;
-    }
-
-    /**
-     * Gets the 2D array of seats in the hall.
-     *
-     * @return The seat array.
-     */
-    public Seat[][] getSeats() {
-        return seats;
-    }
-
-    /**
-     * Gets the number of rows in the hall.
-     *
-     * @return The number of rows.
-     */
-    public int getNumberOfRows() {
-        return numberOfRows;
-    }
-
-    /**
-     * Gets the number of columns in the hall.
-     *
-     * @return The number of columns.
-     */
-    public int getNumberOfCols() {
-        return numberOfCols;
-    }
-
-    // Other Methods
-
-    /**
-     * Initializes the seats in the hall with IDs and class types.
-     *
-     * @param numberOfRows The number of rows in the hall.
-     * @param numberOfCols The number of columns in the hall.
-     */
+    
+    // getter functions
+    public int getTotalSeats () {return numberOfRows * numberOfCols;}
+    public int getBookedSeats () {return bookedSeatsCount;}
+    public int getID () {return id;}
+    //not in UML
+    public Seat[][] getSeats () {return seats;}
+    public int getNumberOfRows () {return numberOfRows;}
+    public int getNumberOfCols () {return numberOfCols;}
+    
     private void initializeSeats(int numberOfRows, int numberOfCols) {
         seats = new Seat[numberOfRows][numberOfCols];
         for (int row = 0; row < numberOfRows; row++) {
@@ -192,48 +98,106 @@ public class Hall {
         }
     }
 
-    /**
-     * Books a seat in the hall based on its ID.
-     *
-     * @param seatID The unique ID of the seat to book.
-     * @return True if the seat was successfully booked; false otherwise.
-     */
-    public boolean bookSeat(String seatID) {
-        int row = seatID.charAt(0) - 'A';
+    public boolean bookSeat (String seatID) {        int row = seatID.charAt(0) - 'A';
         int col = Integer.parseInt(seatID.substring(1)) - 1;
-
-        if (row >= 0 && row < numberOfRows && col >= 0 && col < numberOfCols) {
+        if ((row >= 0 && row < numberOfRows) && (col >= 0 && col < numberOfCols)) {
             if (seats[row][col].isAvailable()) {
-                seats[row][col].setAvailability(false);
-                bookedSeatsCount++;
-                return true;
-            } else {
-                System.out.println("Error: Seat " + seatID + " is already booked.");
+            seats[row][col].setAvailability(false);
+            bookedSeatsCount++;
+            return true;
+            }else{
+            System.out.println("Error: Seat " + seatID + " is already booked.");
             }
-        } else {
+        }else{
             System.out.println("Error: Seat " + seatID + " is out of bounds.");
         }
         return false;
     }
 
-    /**
-     * Checks if the hall is fully booked.
-     *
-     * @return True if all seats are booked; false otherwise.
-     */
-    public boolean isFull() {
+    
+    public boolean isFull () {
         return getBookedSeats() == getTotalSeats();
-    }
+    }    
 
-    /**
-     * Represents a seat in the hall with attributes like ID, availability, price, and class type.
+    
+/*
+    The Seat class represents a seat in a movie hall with attributes ID, availability,
+    price, and class type. The price is determined based on the class type of the seat.
+ */
+
+//todo: Recheck the code with UML
+public static class Seat {
+    // Unique identifier for the seat
+    private String id;
+    
+    // Indicates whether the seat is available for booking
+    private boolean isAvailable = true;
+    
+    // Price of the seat based on its class type
+    private float price;
+    
+    // Class type of the seat (FirstClass, SecondClass, ThirdClass)
+    //todo: Add class of seat
+    private enClass classType;
+
+    /*
+      Sets the unique identifier for the seat.
      */
-    public static class Seat {
-        private String id; // Unique identifier for the seat
-        private boolean isAvailable = true; // Seat availability
-        private float price; // Price of the seat
-        private enClass classType; // Class type of the seat (FirstClass, SecondClass, ThirdClass)
-
-        // Setters and Getters with Documentation...
+    public void setID(String id) {
+        this.id = id;
     }
+
+    /*
+       Sets the class type for the seat. The class type affects the price of the seat.
+     */
+    public void setClass (enClass classType) {
+        this.classType = classType;
+        setPrice();
+    }
+
+    /* Sets the availability of the seat for booking. */
+    public void setAvailability(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
+    /*
+      Sets the price of the seat based on its class type. The price varies by class:
+      - FirstClass: 200.50
+      - SecondClass: 250.95
+      - ThirdClass: 350.00
+     */
+    private void setPrice() {
+        switch (classType) {
+            case FIRST -> price = 200.50F;
+            case SECOND -> price = 250.95F;
+            case THIRD -> price = 350.00F;
+            default -> throw new AssertionError("Seat Class is Unknown.");
+        }
+    }
+
+    /* Gets the unique identifier for the seat */
+    public String getID() {
+        return id;
+    }
+
+    /* Gets the class type of the seat */
+    public String getClassType() {
+        return classType.getDescription();
+    }
+
+    /*
+      Gets the price of the seat. This method calls setPrice() to determine the price
+      based on the class type
+    */
+    public float getPrice() {
+        return price;
+    }
+
+    /* Checks if the seat is available for booking */
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+}
+
+
 }

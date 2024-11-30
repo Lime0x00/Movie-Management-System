@@ -1,20 +1,11 @@
-/**
- * Utility class for formatting durations and dates.
- */
 package CLI;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Format {
 
-    /**
-     * Formats a duration in hours into a human-readable string representation.
-     *
-     * @param durationInHours the duration in hours
-     * @return a string representation of the duration, or "Invalid duration" if the input is invalid
-     */
-    public static String duration(double durationInHours) {
+public class Format {
+    public static String duration (double durationInHours) {
         if (durationInHours <= 0) {
             return "Invalid duration";
         }
@@ -36,13 +27,6 @@ public class Format {
         }
     }
 
-    /**
-     * Formats the duration between two {@link Date} objects into a human-readable string representation.
-     *
-     * @param startDate the start date
-     * @param endDate   the end date
-     * @return a string representation of the duration, or "Invalid duration" if the dates are invalid
-     */
     public static String duration(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
             return "Invalid dates";
@@ -58,13 +42,7 @@ public class Format {
         return duration(durationInHours);
     }
 
-    /**
-     * Formats a {@link Date} object into a human-readable string representation.
-     *
-     * @param date the date to format
-     * @return a string representation of the date in the format "dd MMM yyyy at HH:mm"
-     */
-    public static String date(Date date) {
+    public static String date (Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy 'at' HH:mm");
         return dateFormat.format(date);
     }
